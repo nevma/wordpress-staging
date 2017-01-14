@@ -48,11 +48,11 @@ Set this directory and url in the `bin/wp-staging-create.sh` as the
 `BASE_DIRECTORY` and `BASE_URL` variables which you will find at the top. These
 are simple strings that should require no escaping.
 
-*bin/wp-staging-create.sh*
-`
+**bin/wp-staging-create.sh**
+```bash
 BASE_DIRECTORY=/home/username/staging.mydomain.com
 BASE_URL=http://staging.mydomain.com
-`
+```
 
 Run the `bin/wp-staging-create.sh` script and provide it with 2 arguments: a) the
 *path to the WordPress installation* that you want to clone and b) a simple *name*

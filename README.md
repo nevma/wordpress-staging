@@ -2,7 +2,15 @@
 
 A simple WordPress staging installation creation bash shell script.
 
-## Setup
+The goal of this script is to provide an easy way for one to create staging
+installations of their WordPress websites in any Linux environment where one
+has at least _some_ privileges. It simply clones the source WordPress
+directory but tries to be as intuitive as possible by detecting the Linux
+user of the target, using the same database user as the source and making
+all the necessary database string replacements, so that the result is a
+full working clone of the source.
+
+## Settings
 
 Open `wp-staging-create.sh` and set the `BASE_DIRECTORY` and `BASE_URL` bash
 variables so that they point to the directory where your staging websites will
@@ -13,7 +21,9 @@ respectively.
 
 Call `wp-staging-create.sh` as `root` and provide it with the source WordPress
 directory which is to be staged as a first argument and a name for the staging
-installation.
+installation. If both the source WordPress and the cloned one run under the 
+same Linux user, then you may run it under this user as well. Rnning as `root`
+allows one to clone any WordPress installation in their server.
 
 ## What it does
 
@@ -24,6 +34,18 @@ database with the name of the staging installation, uses the same user as the
 source database for simplicity, imports the source database dump to it, replaces
 all the path and url strings in that database, thus creating a working clone of
 the source WordPress installation in the target directory and at the target url.
+
+## A common setup
+
+Say you have a CPanel server with one user.
+
+Create a subdomain where you will put your staging websites. They will all have
+to be in this subdomain. This subdomain will thus have its own directory and 
+base url.
+
+Copy the contents of 
+
+Set this directory and url in the `wp-staging-create.sh`  `BASE_DIRECTORY` and `BASE_URL`
 
 ## Cleanup
 

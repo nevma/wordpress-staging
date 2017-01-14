@@ -37,15 +37,36 @@ the source WordPress installation in the target directory and at the target url.
 
 ## A common setup
 
-Say you have a CPanel server with one user.
+Say you have a *CPanel* server with one user.
 
 Create a subdomain where you will put your staging websites. They will all have
 to be in this subdomain. This subdomain will thus have its own directory and 
 base url.
 
-Copy the contents of 
+Copy the contents of the `dist` directory in your CPanel user's home directory.
+Set this directory and url in the `bin/wp-staging-create.sh` as the
+`BASE_DIRECTORY` and `BASE_URL` variables which you will find at the top. These
+are simple strings that should require no escaping.
 
-Set this directory and url in the `wp-staging-create.sh`  `BASE_DIRECTORY` and `BASE_URL`
+*bin/wp-staging-create.sh*
+`
+BASE_DIRECTORY=/home/username/staging.mydomain.com
+BASE_URL=http://staging.mydomain.com
+`
+
+Run the `bin/wp-staging-create.sh` script and provide it with 2 arguments: a) the
+*path to the WordPress installation* that you want to clone and b) a simple *name*
+for the staging installation that you want to create.
+
+`_> ./wp-staging-dir/bin/wp-staging-create.sh /home/username/public_html/www.
+mydomain.com mydomain-staging`
+
+You should now have a staging website created at the directory `/home/username/
+staging.mydomain.com/mydomain-staging` and which can be accessed at the url `http://
+staging.mydomain.com/mydomain-staging`
+
+For each staging website a staging database is created but the user of the 
+original WordPress installation database user is used.
 
 ## Cleanup
 
@@ -53,6 +74,11 @@ In order to cleanup the staging directory after you are done with it you can
 call the `wp-staging-delete.sh` script and give it as a sole argument the 
 directory of the staging website. It will take care of deleting the database and
 all the files.
+
+`_> ./wp-staging-dir/bin/wp-staging-delete.sh /home/username/public_html/www.
+mydomain.com`
+
+This should delete the staging directory and its database.
 
 ## Licence
 

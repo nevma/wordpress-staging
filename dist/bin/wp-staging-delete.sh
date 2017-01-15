@@ -11,7 +11,7 @@ echo
 #                                                                              #
 #   ██████╗                                                                    #
 #  ██╔═████╗    Basic settings for the staging websites that will be created.  #
-#  ██║██╔██║    Set them once for all your staging websites.                   #
+#  ██║██╔██║                                                                   #
 #  ████╔╝██║                                                                   #
 #  ╚██████╔╝ ██                                                                #
 #   ╚═════╝                                                                    #
@@ -20,7 +20,7 @@ echo
 
 
 
-echo 1. Reading configuration
+echo 1. Reading parameters
 
 # Check if adequate command line parameters have been given
 if [ $# -ne 1 ]; then

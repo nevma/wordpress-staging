@@ -1,0 +1,68 @@
+/************************************************************************************
+
+	███╗   ███╗███████╗ ██████╗  █████╗     ███╗   ███╗███████╗███╗   ██╗██╗   ██╗
+	████╗ ████║██╔════╝██╔════╝ ██╔══██╗    ████╗ ████║██╔════╝████╗  ██║██║   ██║
+	██╔████╔██║█████╗  ██║  ███╗███████║    ██╔████╔██║█████╗  ██╔██╗ ██║██║   ██║
+	██║╚██╔╝██║██╔══╝  ██║   ██║██╔══██║    ██║╚██╔╝██║██╔══╝  ██║╚██╗██║██║   ██║
+	██║ ╚═╝ ██║███████╗╚██████╔╝██║  ██║    ██║ ╚═╝ ██║███████╗██║ ╚████║╚██████╔╝
+	╚═╝     ╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═╝    ╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝ 
+	                                                                              
+ ************************************************************************************/
+
+
+
+	/* The parent element of the megamenu. */
+
+ 	.responsiville-megamenu-parent {
+ 		position: relative;
+ 	}
+
+		/* The megamenu element itself */
+
+	 	.responsiville-megamenu-element {
+	 		position: absolute;
+	 		left: 0;
+	 		top: 100%;
+	 		z-index: 999;
+	 		margin: 0;
+	 		padding: 0;
+	 		display: none;
+	 		overflow: hidden;
+	 	}
+
+	 	/**
+	 	 * Keep the responsiville megamenu open class before the opening class
+	 	 * because a) we need to keep the overflow property visible when the
+	 	 * megamenu is open so that menu levels deeper than 2 can be visible as
+	 	 * well and b) we need the opening (and closing) class to override the
+	 	 * overflow property to hidden so that the opening (and closing) effects
+	 	 * of the megamenu run smoothly.
+	 	 */
+
+	 	/* Added to the megamenu element when it is opened. */
+
+	  	.responsiville-megamenu-open {
+	 		display: block !important;
+	 		overflow: visible;
+	 	}
+
+	 	/* Added to the megamenu element while it is opening. */
+
+	  	.responsiville-megamenu-opening {
+	 		display: block !important;
+	 		overflow: hidden;
+	 	}
+
+	 	/* Added to the megamenu element while it is closing. */
+
+	  	.responsiville-megamenu-closing {
+	 		overflow: hidden;
+	 	}
+
+	 	/* Momentarily used on the megamenu to calculate its dimensions. */
+
+	  	.responsiville-megamenu-calculating {
+	 		visibility: hidden !important;
+	 		display: block !important;
+	 		height: auto !important;
+	 	}

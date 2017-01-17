@@ -1,0 +1,218 @@
+/***********************************************************************************************
+
+    ███╗   ███╗ ██████╗ ██████╗ ██╗██╗     ███████╗    ███╗   ███╗███████╗███╗   ██╗██╗   ██╗
+    ████╗ ████║██╔═══██╗██╔══██╗██║██║     ██╔════╝    ████╗ ████║██╔════╝████╗  ██║██║   ██║
+    ██╔████╔██║██║   ██║██████╔╝██║██║     █████╗      ██╔████╔██║█████╗  ██╔██╗ ██║██║   ██║
+    ██║╚██╔╝██║██║   ██║██╔══██╗██║██║     ██╔══╝      ██║╚██╔╝██║██╔══╝  ██║╚██╗██║██║   ██║
+    ██║ ╚═╝ ██║╚██████╔╝██████╔╝██║███████╗███████╗    ██║ ╚═╝ ██║███████╗██║ ╚████║╚██████╔╝
+    ╚═╝     ╚═╝ ╚═════╝ ╚═════╝ ╚═╝╚══════╝╚══════╝    ╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝ 
+                                                                                             
+ ***********************************************************************************************/
+
+
+
+    /* Mobile menu clone opening animations. */
+
+    @keyframes mobimenu-slide-down {
+        0% {
+            top: -100%;
+            left: 0;
+        }
+        100% {
+            top: 0;
+            left: 0;
+        }
+    }
+
+    @keyframes mobimenu-slide-right {
+        0% {
+            top: 0;
+            left: -100%;
+        }
+        100% {
+            top: 0;
+            left: 0;
+        }
+    }
+
+
+
+    /* Page body styling when mobimenu is open. */
+
+    .responsiville-mobimenu-open-body {
+        overflow: hidden;
+    }
+
+
+
+    /* Mobimenu wrapper clone. */
+
+    .responsiville-mobimenu-wrapper-clone {
+        display: none;
+    }
+
+    .responsiville-mobimenu-wrapper-clone.responsiville-mobimenu-open {
+        display: block;
+    }
+
+
+
+    /* Original element is hidden while page loading. */
+
+    .responsiville-mobimenu {
+        /*display: none;*/
+    }
+
+    /* After page load and after the mobimenu module has run its hiding is undone, for instance because the browser window might have grown. */
+
+    .responsiville-mobimenu-wrapper .responsiville-mobimenu {
+        display: block;
+    }
+
+    /* But when the mobimenu is actually enabled the original element is hidden again. */
+
+    .responsiville-mobimenu-enabled .responsiville-mobimenu {
+        display: none;
+    }
+
+
+    /* Mobimenu clone, ie the element that actually opens and closes. */
+
+    .responsiville-mobimenu-open .responsiville-mobimenu {
+        display: block;
+    }
+
+    .responsiville-mobimenu-open {
+        position: fixed;
+        overflow: auto;
+        z-index: 999;
+        width: 100%;
+        min-width: 100%;
+        height: 100%;
+        max-height: 100%;
+        margin: 0;
+        padding: 0;
+        background: var(--color-gray-dark);
+    }
+ 
+
+
+    /* Mobimenu burger button. */
+
+    .responsiville-mobimenu-burger,
+    .responsiville-mobimenu-burger:focus,
+    .responsiville-mobimenu-burger:hover {
+        border-width: 0;
+        background: transparent;
+        padding: 0;
+        margin: 0;
+        box-shadow: none;
+        display: none;
+        position: relative;
+        font-size: 4rem;
+    }
+
+        .responsiville-mobimenu-burger::before {
+            font-family: "Responsiville Icons";
+            content: "\E809";
+            display: inline-block;
+        }
+
+        .small .responsiville-mobimenu-burger span {
+            display: none;
+        }
+
+        .tablet .responsiville-mobimenu-burger span {
+            display: inline-block;
+        }
+
+    .responsiville-mobimenu-enabled .responsiville-mobimenu-burger {
+        display: block;
+    }
+
+    .responsiville-mobimenu-open .responsiville-mobimenu-burger {
+        display: none;
+    }
+
+
+
+    /* Mobinenu wrapper clone close button. */
+
+    .responsiville-mobimenu-close,
+    .responsiville-mobimenu-close:focus,
+    .responsiville-mobimenu-close:hover {
+        visibility: hidden;
+        border-width: 0;
+        background: transparent;
+        padding: 0;
+        margin: 0;
+        box-shadow: none;
+        color: var(--color-white);
+        font-size: 8rem;
+        line-height: 6rem;
+        font-family: Georgia, serif;
+        text-align: center;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 8rem;
+        height: 8rem;
+        z-index: 999;
+    }
+
+   .responsiville-mobimenu-close {
+        opacity: 0;
+        transition-property: opacity;
+        transition-duration: 0.5s;
+        transition-delay: 2s;
+        transition-timing-function: ease;
+    }
+    
+    .responsiville-mobimenu-open .responsiville-mobimenu-close {
+        opacity: 1;
+        visibility: visible;
+    }
+
+
+        
+    /*
+     * Mobimenu contents styling (extended styling).
+     *
+     * Applied conditionally, depending on the module's instantiation options.
+     */
+    
+    .responsiville-mobimenu-wrapper-clone:not( .responsiville-mobimenu-unstyled ) ul {
+        margin: 0;
+        padding: 0;
+        display: block;
+    }
+
+        .responsiville-mobimenu-wrapper-clone:not( .responsiville-mobimenu-unstyled ) ul ul {
+            margin: 0;
+            padding: 0;
+            position: relative;
+            display: inline-block;
+        }
+
+    .responsiville-mobimenu-wrapper-clone:not( .responsiville-mobimenu-unstyled ) ul,
+    .responsiville-mobimenu-wrapper-clone:not( .responsiville-mobimenu-unstyled ) ul li {
+        display: block;
+        float: none;
+        text-align: center;
+    }
+
+    .responsiville-mobimenu-wrapper-clone:not( .responsiville-mobimenu-unstyled ) ul ul li {
+        display: inline-block;
+    }
+
+        .responsiville-mobimenu-wrapper-clone:not( .responsiville-mobimenu-unstyled ) a {
+            color: var(--color-white);
+            font-size: 4rem;
+            margin: 0;
+            padding: 1.5rem;
+        }
+
+            .responsiville-mobimenu-wrapper-clone:not( .responsiville-mobimenu-unstyled ) ul ul a {
+                font-size: 2.5rem;
+                padding: 1rem;
+            }

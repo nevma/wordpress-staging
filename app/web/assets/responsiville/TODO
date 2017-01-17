@@ -1,0 +1,173 @@
+
+Vanilla TODOs list
+==================
+
+    Three options for bootstrapping Responsiville
+
+     1) let it auto init at once
+     2) let it auto init, but on DOMContentLoaded
+     3) initialise it manually
+
+    Slideshow slide effect
+
+    ACF custom layouts for
+
+        - columns
+        - responsiville modules
+
+    REGISTER EACH RESPONSIVILLE MODULE WITH RESPONSIVILLE MAIN SO THAT IT CAN AUTO RUN THEM ALL AT ONCE
+
+    megamenu tabbed browsing (perhaps on focus?)
+
+    responsive tables
+    (either with a horizontal scroll, either with responsive columns, either with javascript manipulation)
+
+    add many varieties of social icons
+
+    mobimenu be able to run as a drawer
+
+    PHP initialiser for Responsiville modules
+
+        responsiville_modules = array(
+            array(
+                'name'   => 'accordion',
+                'script' => 'js/responsiville.accordion.js',
+                'debug'  => true,
+                'init'   => true
+            ),
+            .
+            .
+            .
+        );
+
+    Multi-level megamenu
+    Megamenu have an event queue/bus for UI animations to facilitate chained animations for 2nd level megamenus => BUT OUR ANIMATION LIBRARY ALREADY HAS A QUEUE OF ITS OWN!!!
+
+    All module classes should be in options.
+
+    DOCUMENTATION IN PARTS
+
+    DOCUMENTATION with diagrams like
+
+        Mobimenu
+
+        Initially
+        --------
+        | menu |
+        -------- 
+        
+        a single element
+
+        Then
+        ----------------
+        | wrapper      |
+        | ------------ |
+        | | # | menu | |
+        | ------------ |
+        ---------------- 
+
+        an auxiliary element is added and the whole thing wrapped in a container
+
+        And cloned
+        ------------------
+        | cloned         |
+        | wrapper        |
+        |     ---------- |
+        |     | cloned | |
+        |     | menu   | |
+        |     ---------- |
+        ------------------ 
+
+        the original element is cloned and wrapped in a container
+
+    New Elements
+        Popup
+        Anchorpopup
+        Tabs
+        Back to top
+        Full screen gallery
+
+    New events & callbacks 
+        how far down the page we have scrolled
+        which element has become visible (or invisible)
+
+    TinyMCE custom styles
+        http://codex.wordpress.org/TinyMCE_Custom_Styles
+        https://wordpress.org/plugins/visual-editor-custom-buttons/
+
+    Element queries, ie media queries upon specific element dimensions.
+
+===============================================================================
+
+    Interface::ResponsivilleModule {
+
+        Properties
+        ==========
+            * responsiville
+            * window
+            * html
+            * body
+            * element
+            * wrapper
+            * active
+            * enabled
+            * state
+        Methods
+        =======
+            - log
+            - dir
+            - loadDataAttributes
+            - registerModule
+            - setupHTML
+            - setupEvents
+            - init
+            - enable
+            - disable
+            - activate
+            - deactivate
+            - open
+            - close
+            - setState
+            - getState
+        Static
+        ======
+            # autoRun
+
+    }
+
+===============================================================================
+
+    Provide a sidebar with links to the most useful tools in web development (Fontello, Regexr, Device.io, CharacterCodes, DevDocs, PHP.net, etc)
+
+    Color pallette constantly available while coding
+
+===============================================================================
+    
+    Multiple taxonomy filtering with pretty permalinks
+
+        http://clients.nevma.gr/vanilla/en/portfolio/?work=constructions+publications 
+            => creates two different tax queries with an AND relation
+
+        http://clients.nevma.gr/vanilla/en/portfolio/?work=constructions,publications
+            => creates one tax query, which causes an OR between its terms
+
+        http://thereforei.am/2011/10/28/advanced-taxonomy-queries-with-pretty-urls
+
+        function eg_add_rewrite_rules() {
+
+            global $wp_rewrite;
+         
+            $new_rules = array(
+                'event/(industry|location)/(.+?)/(industry|location)/(.+?)/?$' => 'index.php?post_type=eg_event&' . $wp_rewrite->preg_index(1) . '=' . $wp_rewrite->preg_index(2) . '&' . $wp_rewrite->preg_index(3) . '=' . $wp_rewrite->preg_index(4),
+                'event/(industry|location)/(.+)/?$' => 'index.php?post_type=eg_event&' . $wp_rewrite->preg_index(1) . '=' . $wp_rewrite->preg_index(2)
+            );
+
+            $wp_rewrite->rules = $new_rules + $wp_rewrite->rules;
+
+        }
+
+        // runs each times the permalinks are saved
+        
+        add_action( 'generate_rewrite_rules', 'eg_add_rewrite_rules' ); 
+
+================================================================================

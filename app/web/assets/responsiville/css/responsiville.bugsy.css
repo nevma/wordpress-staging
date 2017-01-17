@@ -1,0 +1,295 @@
+/***************************************************************************************************************************
+
+     ██████╗     ██████╗     ███╗   ██╗    ████████╗     █████╗     ██╗    ███╗   ██╗    ███████╗    ██████╗     ███████╗
+    ██╔════╝    ██╔═══██╗    ████╗  ██║    ╚══██╔══╝    ██╔══██╗    ██║    ████╗  ██║    ██╔════╝    ██╔══██╗    ██╔════╝
+    ██║         ██║   ██║    ██╔██╗ ██║       ██║       ███████║    ██║    ██╔██╗ ██║    █████╗      ██████╔╝    ███████╗
+    ██║         ██║   ██║    ██║╚██╗██║       ██║       ██╔══██║    ██║    ██║╚██╗██║    ██╔══╝      ██╔══██╗    ╚════██║
+    ╚██████╗    ╚██████╔╝    ██║ ╚████║       ██║       ██║  ██║    ██║    ██║ ╚████║    ███████╗    ██║  ██║    ███████║
+     ╚═════╝     ╚═════╝     ╚═╝  ╚═══╝       ╚═╝       ╚═╝  ╚═╝    ╚═╝    ╚═╝  ╚═══╝    ╚══════╝    ╚═╝  ╚═╝    ╚══════╝
+                                                                                                                         
+ ***************************************************************************************************************************/
+
+
+
+    .responsiville-debug-controls {
+        position: fixed;
+        padding: 0.5rem;
+        max-width: 25rem;
+        background: var(--color-gray-light-x);
+        color: rgb(60, 60, 60);
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 1.2rem;
+        border: 0.5rem solid var(--color-gray);
+        border-radius: 0.5rem;
+        text-align: right;
+        box-shadow: 0 0 1rem var(--color-gray); 
+        z-index: 999;
+        opacity: 0.75;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+    }
+
+    .responsiville-debug-controls.tl {
+        left: 2rem;
+        top: 2rem;
+    }
+
+    .responsiville-debug-controls.tr {
+        right: 2rem;
+        top: 2rem;
+    }
+
+    .responsiville-debug-controls.bl {
+        left: 2rem;
+        bottom: 2rem;
+    }
+
+    .responsiville-debug-controls.br {
+        right: 2rem;
+        bottom: 2rem;
+    }
+
+    .responsiville-debug-controls-closed {
+        padding: 0.2rem;
+    }
+
+        .responsiville-debug-controls section {
+            padding: 0.3rem 0 0.25rem 0;
+            border-bottom: 0.3rem solid var(--color-gray);
+        }
+
+        .responsiville-debug-controls section:last-of-type {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .responsiville-debug-controls-closed section {
+            display: none;
+        }
+
+        .responsiville-debug-controls input {
+            vertical-align: middle;
+        }
+
+            .responsiville-debug-controls table, 
+            .responsiville-debug-controls tbody, 
+            .responsiville-debug-controls tr {
+                margin: 0;
+                padding: 0;
+            }
+
+                .responsiville-debug-performance tr {
+                    cursor: help;
+                }
+
+                .responsiville-debug-controls td {
+                    padding: 0 0.5rem;
+                }
+
+                .responsiville-debug-controls td:first-of-type {
+                    padding-left: 0;
+                }
+
+                .responsiville-debug-controls td:last-of-type {
+                    padding-right: 0;
+                }
+
+        .responsiville-debug-text {
+            text-align: left;
+        }
+
+            .responsiville-debug-text .button {
+                display: inline-block;
+                width: auto;
+                padding: 0 0.3rem;
+                margin: 0.3rem 0.3rem;
+                font-size: 85%;
+            }
+
+        .responsiville-debug-toggle {
+            position: absolute;
+            right: 0.2rem;
+            bottom: 0.5rem;
+            width: auto;
+            padding: 0.5rem 0.75rem;
+        }
+
+            .responsiville-debug-toggle::before {
+                font-family: "Responsiville Icons";
+                content: "\E819";
+                display: inline-block;
+                padding: 0;
+            }
+
+            .responsiville-debug-toggle-closed {
+                position: static;
+            }
+
+            .responsiville-debug-toggle-closed::before {
+                display: inline-block;
+                padding: 0;
+            }
+
+
+
+/************************************************************************************************************************
+
+    ██████╗     ██╗    ███╗   ███╗    ███████╗    ███╗   ██╗    ███████╗    ██╗     ██████╗     ███╗   ██╗    ███████╗
+    ██╔══██╗    ██║    ████╗ ████║    ██╔════╝    ████╗  ██║    ██╔════╝    ██║    ██╔═══██╗    ████╗  ██║    ██╔════╝
+    ██║  ██║    ██║    ██╔████╔██║    █████╗      ██╔██╗ ██║    ███████╗    ██║    ██║   ██║    ██╔██╗ ██║    ███████╗
+    ██║  ██║    ██║    ██║╚██╔╝██║    ██╔══╝      ██║╚██╗██║    ╚════██║    ██║    ██║   ██║    ██║╚██╗██║    ╚════██║
+    ██████╔╝    ██║    ██║ ╚═╝ ██║    ███████╗    ██║ ╚████║    ███████║    ██║    ╚██████╔╝    ██║ ╚████║    ███████║
+    ╚═════╝     ╚═╝    ╚═╝     ╚═╝    ╚══════╝    ╚═╝  ╚═══╝    ╚══════╝    ╚═╝     ╚═════╝     ╚═╝  ╚═══╝    ╚══════╝
+                                                                                                                  
+ ************************************************************************************************************************/
+
+
+
+    .responsiville-debug-dimensions-icon {
+        display: inline-block;
+        vertical-align: middle;
+        font-family: "Responsiville Icons";
+    }
+
+    .responsiville-debug-dimensions-icon.small {
+        font-size: 2rem;
+    }
+
+    .responsiville-debug-dimensions-icon.mobile {
+        font-size: 2.25rem;
+    }
+
+    .responsiville-debug-dimensions-icon.tablet {
+        font-size: 2.5rem;
+    }
+
+    .responsiville-debug-dimensions-icon.laptop {
+        font-size: 3rem;
+    }
+
+    .responsiville-debug-dimensions-icon.desktop {
+        font-size: 3.25rem;
+    }
+
+    .responsiville-debug-dimensions-icon.large {
+        font-size: 3.5rem;
+    }
+
+    .responsiville-debug-dimensions-icon.xlarge {
+        font-size: 3.75rem;
+    }
+
+
+
+/*******************************************************************************************************************
+
+    ██████╗ ███████╗██████╗ ██╗   ██╗ ██████╗      ██████╗ ██████╗ ██╗     ██╗   ██╗███╗   ███╗███╗   ██╗███████╗
+    ██╔══██╗██╔════╝██╔══██╗██║   ██║██╔════╝     ██╔════╝██╔═══██╗██║     ██║   ██║████╗ ████║████╗  ██║██╔════╝
+    ██║  ██║█████╗  ██████╔╝██║   ██║██║  ███╗    ██║     ██║   ██║██║     ██║   ██║██╔████╔██║██╔██╗ ██║███████╗
+    ██║  ██║██╔══╝  ██╔══██╗██║   ██║██║   ██║    ██║     ██║   ██║██║     ██║   ██║██║╚██╔╝██║██║╚██╗██║╚════██║
+    ██████╔╝███████╗██████╔╝╚██████╔╝╚██████╔╝    ╚██████╗╚██████╔╝███████╗╚██████╔╝██║ ╚═╝ ██║██║ ╚████║███████║
+    ╚═════╝ ╚══════╝╚═════╝  ╚═════╝  ╚═════╝      ╚═════╝ ╚═════╝ ╚══════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═══╝╚══════╝
+                                                                                                             
+ *******************************************************************************************************************/
+
+
+
+    .responsiville-debug-grid {
+        background: white;
+    }
+
+    .responsiville-debug-grid .row,
+    .responsiville-debug-grid [class*="column"] {
+        outline: 0.1rem dotted var(--color-red);
+        position: relative;
+    }
+
+    .responsiville-debug-grid .row {
+        background: var(--color-gray) !important;
+    }
+
+    .responsiville-debug-grid [class*="column"] {
+        background: var(--color-gray-light-x) !important;
+    }
+
+
+
+/***************************************************************************************************************
+
+    ██████╗ ███████╗██████╗ ██╗   ██╗ ██████╗      ██████╗ ███████╗███╗   ██╗███████╗██████╗  █████╗ ██╗     
+    ██╔══██╗██╔════╝██╔══██╗██║   ██║██╔════╝     ██╔════╝ ██╔════╝████╗  ██║██╔════╝██╔══██╗██╔══██╗██║     
+    ██║  ██║█████╗  ██████╔╝██║   ██║██║  ███╗    ██║  ███╗█████╗  ██╔██╗ ██║█████╗  ██████╔╝███████║██║     
+    ██║  ██║██╔══╝  ██╔══██╗██║   ██║██║   ██║    ██║   ██║██╔══╝  ██║╚██╗██║██╔══╝  ██╔══██╗██╔══██║██║     
+    ██████╔╝███████╗██████╔╝╚██████╔╝╚██████╔╝    ╚██████╔╝███████╗██║ ╚████║███████╗██║  ██║██║  ██║███████╗
+    ╚═════╝ ╚══════╝╚═════╝  ╚═════╝  ╚═════╝      ╚═════╝ ╚══════╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝
+                                                                                                         
+ ***************************************************************************************************************/
+
+
+
+    .responsiville-debug-grid .wrapper {
+        border-width: 0;
+        padding: 0;
+        background: none;
+    }
+
+    .class-info {
+        position: absolute;
+        display: none !important;
+        width: 100% !important;
+        font-size: 1rem !important;
+        font-family: Consolas, "Courier New", monospace !important;
+        color: var(--color-gray-dark) !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        text-align: left !important;
+    }
+
+    .class-info.start {
+        top: 0;
+        left: 0;
+    }
+
+    .class-info.end {
+        bottom: 0;
+        right: 0;
+        font-style: italic !important;
+    }
+
+    .responsiville-debug-grid .class-info {
+        display: block !important;
+    }
+
+    .responsiville-debug-blocks .row, 
+    .responsiville-debug-blocks h1, 
+    .responsiville-debug-blocks h2, 
+    .responsiville-debug-blocks h3, 
+    .responsiville-debug-blocks h4, 
+    .responsiville-debug-blocks h5, 
+    .responsiville-debug-blocks h6, 
+    .responsiville-debug-blocks p, 
+    .responsiville-debug-blocks ul, 
+    .responsiville-debug-blocks ol,
+    .responsiville-debug-blocks pre,
+    .responsiville-debug-blocks figure,
+    .responsiville-debug-blocks blockquote {
+        outline: 0.1rem dotted var(--color-red);
+    }
+
+    .responsiville-debug-controls .row, 
+    .responsiville-debug-controls h1, 
+    .responsiville-debug-controls h2, 
+    .responsiville-debug-controls h3, 
+    .responsiville-debug-controls h4, 
+    .responsiville-debug-controls h5, 
+    .responsiville-debug-controls h6, 
+    .responsiville-debug-controls p, 
+    .responsiville-debug-controls ul, 
+    .responsiville-debug-controls ol,
+    .responsiville-debug-controls pre,
+    .responsiville-debug-controls figure,
+    .responsiville-debug-controls blockquote {
+        outline: none;
+    }

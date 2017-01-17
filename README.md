@@ -80,6 +80,10 @@ mydomain.com`
 
 This should delete the staging directory and its database.
 
+## Credits
+
+Uses the ["interconnect/it Database search and replacement script"](https://interconnectit.com/products/search-and-replace-for-wordpress-databases/).
+
 ## Licence
 
 The license for this project is GPL v.3.

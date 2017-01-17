@@ -1,0 +1,202 @@
+/************************************************************************************************************
+
+    ███████╗    ██╗         ██╗    ██████╗     ███████╗    ███████╗    ██╗  ██╗     ██████╗     ██╗    ██╗
+    ██╔════╝    ██║         ██║    ██╔══██╗    ██╔════╝    ██╔════╝    ██║  ██║    ██╔═══██╗    ██║    ██║
+    ███████╗    ██║         ██║    ██║  ██║    █████╗      ███████╗    ███████║    ██║   ██║    ██║ █╗ ██║
+    ╚════██║    ██║         ██║    ██║  ██║    ██╔══╝      ╚════██║    ██╔══██║    ██║   ██║    ██║███╗██║
+    ███████║    ███████╗    ██║    ██████╔╝    ███████╗    ███████║    ██║  ██║    ╚██████╔╝    ╚███╔███╔╝
+    ╚══════╝    ╚══════╝    ╚═╝    ╚═════╝     ╚══════╝    ╚══════╝    ╚═╝  ╚═╝     ╚═════╝      ╚══╝╚══╝ 
+                                                                                                          
+ ************************************************************************************************************/
+
+
+
+    /* The slideshow main container. */
+
+    .responsiville-slideshow {
+        position: relative;
+    }
+
+
+
+    /* Slideshow loading animation. */
+
+    @keyframes home-slideshow-spinner {
+        0% {
+            transform: rotateZ(0deg);
+        }
+        50% {
+            transform: rotateZ(180deg);
+        }
+        100% {
+            transform: rotateZ(360deg);
+        }
+    }
+    
+    .responsiville-slideshow-loading::before {
+        content: "\E811";
+        font-size: 5rem;
+        font-family: 'Responsiville Icons';
+        position: absolute;
+        top: 40%;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        animation: home-slideshow-spinner 0.5s linear infinite;
+    }
+
+
+
+        /* The slideshow slides. */
+
+        .responsiville-slideshow-enabled .responsiville-slideshow-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .responsiville-slideshow-slide-hidden {
+            display: none;
+        }
+
+
+
+        /* The slideshow next/previous navigation. */
+
+        .responsiville-slideshow-navigation {
+            display: none;
+        }
+
+        .responsiville-slideshow-enabled .responsiville-slideshow-navigation {
+            display: block;
+        }
+
+            .responsiville-slideshow-next,
+            .responsiville-slideshow-previous,
+            .responsiville-slideshow-next:hover,
+            .responsiville-slideshow-previous:hover {
+                padding: 0;
+                margin: 0;
+                background: transparent;
+                box-shadow: none;
+                position: absolute;
+                z-index: 1;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+
+            .responsiville-slideshow-next {
+                right: calc(2*var(--grid-gutter));
+            }
+
+            .responsiville-slideshow-previous {
+                left: calc(2*var(--grid-gutter));
+            }
+
+            .responsiville-slideshow-next-icon::before,
+            .responsiville-slideshow-previous-icon::before {
+                display: inline-block;
+                font-family: "Responsiville icons";
+                color: var(--color-gray-dark);
+                font-size: 6rem;
+                line-height: 1;
+            }
+            
+            .responsiville-slideshow-next-icon::before {
+                content: "\E816";
+            }
+
+            .responsiville-slideshow-previous-icon::before {
+                content: "\E817"; 
+            }
+
+            .responsiville-slideshow-next-text,
+            .responsiville-slideshow-previous-text {
+                display: none;
+            }
+
+
+
+        /* The slideshow bullets navigation. */
+
+        .responsiville-slideshow-bullets {
+            display: none;
+            position: absolute;
+            padding: 0;
+            margin: 0;
+            width: auto;
+            line-height: 1;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .responsiville-slideshow-enabled .responsiville-slideshow-bullets {
+            display: block;
+        }
+
+        .responsiville-slideshow-bullets.tl {
+            top: 0;
+            left: 0;
+        }
+
+        .responsiville-slideshow-bullets.tr {
+            top: 0;
+            right: 0;
+        }
+
+        .responsiville-slideshow-bullets.bl {
+            bottom: 0;
+            left: 0;
+        }
+
+        .responsiville-slideshow-bullets.br {
+            bottom: 0;
+            right: 0;
+        }
+
+        .responsiville-slideshow-bullets.tc,
+        .responsiville-slideshow-bullets.bc {
+            left: 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        .responsiville-slideshow-bullets.tc {
+            top: 2rem;
+        }
+
+        .responsiville-slideshow-bullets.bc {
+            bottom: 2rem;
+        }
+
+        
+            /* The slideshow bullets */     
+
+            .responsiville-slideshow-bullet {
+                padding: 0;
+                margin: 0 0.5rem;
+                background: transparent;
+                box-shadow: none;
+                position: relative;
+                display: inline-block;
+                width: 3rem;
+                height: 3rem;
+                background-color: var(--color-white);
+                border-width: 0.2rem;
+                border-color: var(--color-gray-dark);
+                border-radius: 50%;
+                border-style: solid;
+            }
+
+            .responsiville-slideshow-bullet:hover,
+            .responsiville-slideshow-bullet.responsiville-slideshow-bullet-selected {
+                background-color: var(--color-gray-dark);
+            }
+
+                .responsiville-slideshow-bullet-icon,
+                .responsiville-slideshow-bullet-text,
+                .responsiville-slideshow-bullet-number {
+                    display: none;
+                }

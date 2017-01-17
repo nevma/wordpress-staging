@@ -1,0 +1,173 @@
+
+Responsiville changelog <developer's cut>
+=========================================
+
+
+
+v-1.2
+================
+since 01/01/2017
+
+    Upgrade
+    =======
+    1) All scripts in config.php.
+    2) No scripts in theme header or footer.
+    3) Responsiville flags in config.php.
+    4) No Responsiville flags in theme header or footer.
+
+    - Revamped documentation. Finally!
+
+    - Added a z-index property to the Scrollmenu module.
+
+
+
+v-1.1
+================
+since 01/09/2016
+
+    Upgrade
+    =======
+    In order for one to upgrade Vanilla to this version of Responsiville one
+    needs to follow these three steps:
+
+    1) Set the RESPONSIVILLE_DEBUG and RESPONSIVILLE_AUTO_INIT global 
+       settings right before the Responsiville scripts are output.
+    2) Remove the Responsiville initialisation declarations because the
+       framework now automatically initialises.
+    3) Set the correct classes to the HTML elements that define each
+       Responsiville module because these modules now automatically 
+       initialise.
+
+    - Added push and pull grid classes to visually reorder columns as per 
+      breakpoint.
+
+    - Responsiville and its modules are now intialised in a separate script file
+      named responsiville.run.js.
+
+    - Responsiville is now adjusted to the current breakpoint  immediately, when
+      it is set to run automatically, and does not wait for the DOMContentLoaded
+      event to fire. 
+
+    - Responsiville main debug settings are now held in a global variable named
+      RESPONSIVILLE_DEBUG which can be declared before the framework itself.
+
+    - Responsiville auto init settings are now held in global variable named
+      RESPONSIVILLE_AUTO_INIT which can be declared before the framework scripts
+      are included in the page HTML.
+
+    - Responsiville modules can now be initialized via data attributes in the
+      main element that defines each module.
+
+    - Added generic event handling mechanism for all Responsiville modules.
+
+    - All events of the Responsiville framework and its modules are now handled
+      by the uniform event handling mechanism.
+
+    - Added important events and callbacks for all Responsiville modules.
+
+    - Previous event handlers of the Responsiville Main module have now been
+      competely replaced with the new uniform way of event handling.
+
+    - First versions of the event mechanism had a bug where only the last of the
+      function callback were called. This is now fixed.
+
+    - Now only the breakpoint from which the page left and the one to which the
+      page ended up in trigger the respective `enter.xxxxx` and `leave.xxxxx`
+      events.
+
+    - Mobimenu now clones the original menu element to allow for style and
+      animations separation.
+
+    - Mobimenu now creates the burger menu as a sibling of the original menu
+      element. This way, when the original menu is hidden, the burger menu seems
+      to have replaced it. However the mobimenu should be placed within an
+      independent container that handles its general layout. 
+
+    - Mobimenu now acts as a general offcanvas element. A special parameter 
+      controls whether its contents are actually styled or not.
+
+    - Megamenu observes DOM for changes to see if new elements have appeared
+      that need to be handled by it.
+
+    - Megamenu adds an active class to the activator when it is active.
+
+    - Equalheights now has an enabled and disabled state.
+
+    - Equalheights can now equalise children inside the selected elements, and
+      even many groups of children at the same time.
+
+    - Added "device" and "pc" classes to the HTML element to denote whether the
+      current device is a PC or a phone/tablet.
+
+    - Slideshow hickups partially fixed due to better setTimeout handling. Bug
+      of hidden slide if disabling while in slideshow transition remains.
+
+    - Slideshow now automatically creates the necessary navigation inside it.
+
+    - Started adding code examples in HTML and beautifying them.
+
+
+
+v-1.0
+================
+since 01/07/2016
+
+    - Refactored framework so that it can auto initialise.
+
+    - All framework modules can now auto initialise by using predefined classes,
+      which are expected to be found in the DOM inside the elements where the 
+      developer wants to activate them on.
+
+    - Grew default moressette buttons a bit.
+
+    - Nevma jQuery greek uppercase plugin now runs correctly on its predefined
+      classes. Used to have a bug there.
+
+    - Nevma jQuery no scroll layer plugin now runs correctly on its predefined
+      classes.  Used to have a bug there.
+
+    - Init events have been added to the framework on the Responsiville Main
+      object. This lead to some code refactoring in order to ensure that the 
+      framework runs immediately but its core functionality happens after the
+      DOMContentLoaded event.
+
+    - Framework used to sometimes require a phoney window resize trigger in
+      order for the init callback to run. Now it doesn't. 
+
+    - Buttons and input elements now have the same total dimensions in their 
+      natural sizes.
+
+    - Scrollmenu fixHeight property no longer necessary because the fixed
+      element is now a clone of the original and the original is no longer 
+      detached from the page flow.
+
+    - Scrollmenu now clones the element it works on. 
+
+    - Scrollmenu checks inside the elements it handles for possible mobimenus or
+      megamenus in order to set them up. 
+
+    - Inserted by hand a '.menu-item-has-children > a' selector in the megamenu
+      initialising function so that WordPress menus are handled automatically. 
+
+    - When adding a callback to the Responsiville Main object for when a 
+      breakpoint changes (or entered or left) then, if the browser is already in
+      that breakpoint, the callback is called immediately at that moment for the
+      first time. This is because many of the framework's modules are enabled
+      when certain breakpoints are entered and it is perfectly natural that a
+      module might be called a lot later after the page has loaded. 
+
+
+
+v<1.0
+=================
+before 01/07/2016
+
+    - Lots of stuff, but we were not keeping a log those days, sorry.
+
+
+
+v-0.0
+==========
+ca 08/2014
+
+    - It's the beginning of a fantastic journey.

@@ -80,9 +80,14 @@ mydomain.com`
 
 This should delete the staging directory and its database.
 
+## Web app
+
+We are working on a web app version of the script, one that has a simple web
+interface, where you do not need to use the command line.
+
 ## Credits
 
-Uses the ["interconnect/it Database search and replacement script"](https://interconnectit.com/products/search-and-replace-for-wordpress-databases/).
+Uses the ["Interconnect/it Database search and replacement script"](https://interconnectit.com/products/search-and-replace-for-wordpress-databases/).
 
 ## Licence
 

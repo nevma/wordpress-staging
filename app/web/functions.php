@@ -30,18 +30,27 @@
         switch ( $action ) {
 
             case 'help' :
+
                 show_help_message();
                 break;
             
             case 'create' :
+
                 create_website_in_staging();
                 break;
             
             case 'delete' :
+
                 delete_website_from_staging();
                 break;
             
+            case 'log' :
+
+                show_log();
+                break;
+            
             default:
+            
                 break;
 
         }
@@ -93,6 +102,21 @@
 
 
 
+    function show_log () {
+
+        $length = isset( $_GET['length'] ) ? intval( $_GET['length'] ) : 100;
+
+        $log = file_get_contents( 'script/run.log' );
+        $log_array = explode( "\n", $log );
+        $total = sizeof( $log_array );
+        $log_array = array_slice( $log_array, $total-$length, $total );
+
+        create_message( 'Here are the last ' . $length . ' log lines: <hr /> <small>'. implode( '<br />', $log_array ) . '</small>' );
+
+    }
+
+
+
     function create_website_in_staging () {
 
         $name = isset( $_POST['name'] ) ? $_POST['name'] : null;
@@ -116,19 +140,6 @@
             
         }
 
-        if ( ! file_exists( $path ) ) {
-
-            create_message( 'Original website path does not exist: ' . $path, 'error' );
-            return;
-            
-        }
-
-        if ( ! file_exists( $path . '/wp-config.php' ) ) {
-
-            create_message( 'Original website path does not contain a wp-config.php file.', 'error' );
-            return;
-            
-        }
 
         $staging_path = BASE_DIRECTORY . '/' . $name;
 
@@ -144,7 +155,7 @@
         if ( $result === false ) {
             create_message( 'Staging website could not be registered for creation, could not write to file: ' . $file, 'error' );
         } else {
-            create_message( 'Staging website was successfully registered for creation! <br /> ' . $name . ' @ ' . $path, 'success' );
+            create_message( 'Staging website was successfully registered for creation! <br /> ' . $name . ' @ ' . $path . ' <br /> Come back in a little while when the staging process is complete.', 'success' );
         }
 
     }

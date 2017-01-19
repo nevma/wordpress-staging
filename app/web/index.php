@@ -86,11 +86,19 @@
                         if ( $pos !== false ) {
                             $url = substr( $_SERVER['REQUEST_URI'], 0, $pos );
                         }
+
+                        $log_length = intval( isset( $_GET['log-length'] ) ? $_GET['log-length'] : '0' );
+                        if ( $log_length <= 0 ) {
+                            $log_length = 100;
+                        }
                     ?>
                     <p>
                         <a href = "<?php echo $url; ?>" title = "Home">Home</a> &bull;
-                        <a href = "?action=help" title = "Home">Help</a>  &bull;
-                        <a href = "<?php echo $url; ?>" title = "Refresh">Refresh</a>
+                        <a href = "?action=help" title = "Home">Help</a> &bull;
+                        <a href = "<?php echo $url; ?>" title = "Refresh">Refresh</a> &bull;
+                        Show log lines:
+                        <input class = "inline text-center" type = "text" name = "log-length" ID = "log-length" value = "<?php echo $log_length ?>" placeholder = "100" size = "3" />
+                        <a href = "?action=log" class = "button button-small action-log" title = "View log">Go</a>
                     </p>
                 </header>
 

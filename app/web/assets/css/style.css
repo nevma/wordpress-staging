@@ -124,6 +124,16 @@
         border-radius: 3px;
     }
 
+    #log-length {
+        padding: 0;
+        vertical-align: middle;
+    }
+
+    .action-log {
+        padding: 4px 10px;
+        vertical-align: middle;
+    }
+
 
 
 /****************************************************************************

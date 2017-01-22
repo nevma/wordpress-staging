@@ -93,15 +93,24 @@
 
         create_message(
             '<p>
-                Set the necessary parameters:
+                1. Set the necessary parameters:
             </p>
             <ul>
                 <li><code>BASE_URL</code> and</li>
                 <li><code>BASE_DIRECTORY</code> in the script</li>
-                <li><code>&lt;ROOT_DIR&gt;/script/bin/wp-staging-config.sh</code></li>
+                <li><code>&lt;ROOT_DIR&gt;/script/dist/bin/wp-staging-config.sh</code></li>
             </ul>
             <p>
-                Set the following script to run in your cron jobs:
+                2. Set the following scripts to be executable:
+            </p>
+            <ul>
+                <li><code>&lt;ROOT_DIR&gt;/script/wp-staging-config.sh</code></li>
+                <li><code>&lt;ROOT_DIR&gt;/script/dist/bin/wp-staging-config.sh</code></li>
+                <li><code>&lt;ROOT_DIR&gt;/script/dist/bin/wp-staging-create.sh</code></li>
+                <li><code>&lt;ROOT_DIR&gt;/script/dist/bin/wp-staging-delete.sh</code></li>
+            </ul>
+            <p>
+                3. Set the following script to run in your cron jobs:
             </p>
             <ul>
                 <li>To run every 2 minutes add to your <code>crontab</code></li>

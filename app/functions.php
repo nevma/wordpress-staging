@@ -4,6 +4,10 @@
 
 
 
+    ensure_directories_created();
+
+
+
     function read_websites_in_staging () {
 
         $stagings = array();
@@ -81,20 +85,22 @@
 
         create_message(
             '<p>
-                Remember to set the necessary parameters in:
+                Set the necessary parameters:
             </p>
             <ul>
-                <li>&lt;ROOT_DIR&gt;/settings.php</li>
-                <li>&lt;ROOT_DIR&gt;/script/bin/wp-staging-config.sh</li>
+                <li><code>BASE_URL</code> and</li>
+                <li><code>BASE_DIRECTORY</code> in the script</li>
+                <li><code>&lt;ROOT_DIR&gt;/script/bin/wp-staging-config.sh</code></li>
             </ul>
             <p>
-                Also, set the following cron script to run as often as you need:
+                Set the following script to run in your cron jobs:
             </p>
             <ul>
-                <li>* * * * * &lt;ROOT_DIR&gt;/script/wp-staging.cron.sh</li>
+                <li>To run every 2 minutes add to your <code>crontab</code></li>
+                <li><code>*/2 * * * * &lt;ROOT_DIR&gt;/script/wp-staging.cron.sh</code></li>
             </ul>
             <p>
-                The &lt;ROOT_DIR&gt; is the root directory of this web application.
+                The <code>&lt;ROOT_DIR&gt;</code> is the root directory of this web application.
             </p>'
         );
         
@@ -111,7 +117,39 @@
         $total = sizeof( $log_array );
         $log_array = array_slice( $log_array, $total-$length, $total );
 
-        create_message( 'Here are the last ' . $length . ' log lines: <hr /> <small>'. implode( '<br />', $log_array ) . '</small>' );
+        create_message( 'Here are the last ' . $length . ' log lines: <hr /> <small><code>'. implode( '<br />', $log_array ) . '</code></small>' );
+
+    }
+
+
+
+    function check_settings () {
+        
+        if ( ! defined( 'BASE_DIRECTORY' ) || ! defined( 'BASE_URL' ) ) {
+            create_message( 'The "BASE_DIRECTORY" and "BASE_URL" settings have not been set in "script/bin/wp-staging-config.sh"' , 'error');
+        }
+
+    }
+
+
+
+    function ensure_directories_created () {
+
+        $dir_cur = 'data/cur';
+        $dir_del = 'data/del';
+        $dir_new = 'data/new';
+
+        if ( ! file_exists( $dir_cur ) ) {
+            mkdir( $dir_cur, fileperms( '.' ), true );
+        };
+
+        if ( ! file_exists( $dir_del ) ) {
+            mkdir( $dir_del, fileperms( '.' ), true );
+        };
+
+        if ( ! file_exists( $dir_new ) ) {
+            mkdir( $dir_new, fileperms( '.' ), true );
+        };
 
     }
 
@@ -155,7 +193,7 @@
         if ( $result === false ) {
             create_message( 'Staging website could not be registered for creation, could not write to file: ' . $file, 'error' );
         } else {
-            create_message( 'Staging website was successfully registered for creation! <br /> ' . $name . ' @ ' . $path . ' <br /> Come back in a little while when the staging process is complete.', 'success' );
+            create_message( 'Staging website was successfully registered for creation! <br /> ' . $name . ' @ ' . $path . ' <br /> Come back in a little while, when the staging process will be complete.', 'success' );
         }
 
     }

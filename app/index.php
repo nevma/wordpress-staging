@@ -102,7 +102,9 @@
                     </p>
                 </header>
 
-                <?php echo handle_actions(); ?>
+                <?php check_settings(); ?>
+
+                <?php handle_actions(); ?>
 
                 <section class = "content">
                     <h2>Create new staging website</h2>

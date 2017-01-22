@@ -109,7 +109,15 @@
             </ul>
             <p>
                 The <code>&lt;ROOT_DIR&gt;</code> is the root directory of this web application.
-            </p>'
+            </p>
+            <hr />
+            <p>
+                Your current settings are:
+            </p>
+            <ul>
+                <li>BASE_URL=' . BASE_URL . '</li>
+                <li>BASE_DIRECTORY=' . BASE_DIRECTORY . '</li>
+            </ul>'
         );
         
     }
@@ -130,7 +138,7 @@
         $log_array = array_slice( $log_array, $total-$length, $total );
         $log_message = implode( '<br />', $log_array );
 
-        create_message( 'Here are the last ' . $length . ' log lines: <hr /> <small><code>'. $log_message . '</code></small>' );
+        create_message( '<p>Here are the last ' . $length . ' log lines:</p> <hr /> <p><small><code>'. $log_message . '</code></small></p>' );
 
     }
 

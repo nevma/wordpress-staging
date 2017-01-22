@@ -2,7 +2,7 @@
 
     // Read settings straight from the bash config file.
 
-    $bash_config = 'script/bin/wp-staging-config.sh';
+    $bash_config = 'script/dist/bin/wp-staging-config.sh';
 
     if ( file_exists( $bash_config ) ) {
 

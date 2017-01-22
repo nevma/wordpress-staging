@@ -21,12 +21,12 @@ touch $LOCK_FILE
 
 
 # Read basic settings
-source $DIR/bin/wp-staging-config.sh
+source $DIR/dist/bin/wp-staging-config.sh
 
 
 
 # The log file name
-LOG_FILE=`dirname $0`/'run.log'
+LOG_FILE=`dirname $0`/../data/log/run.log
 
 echo -- `date` -- | tee -a $LOG_FILE
 echo | tee -a $LOG_FILE
@@ -55,7 +55,7 @@ else
         echo Source directory $SOURCE_DIRECTORY | tee -a $LOG_FILE
 
         # Call the website staging creation script
-        $DIR/bin/wp-staging-create.sh $SOURCE_DIRECTORY $STAGING_NAME | tee -a $LOG_FILE
+        $DIR/dist/bin/wp-staging-create.sh $SOURCE_DIRECTORY $STAGING_NAME | tee -a $LOG_FILE
 
         # If staging creation script succeded move the file to the list of existing staging websites
         if [ $? -eq 0 ] ; then
@@ -91,7 +91,7 @@ else
         echo Staging directory $STAGING_DIRECTORY | tee -a $LOG_FILE
 
         # Call the website staging deletion script
-        $DIR/bin/wp-staging-delete.sh $STAGING_DIRECTORY | tee -a $LOG_FILE
+        $DIR/dist/bin/wp-staging-delete.sh $STAGING_DIRECTORY | tee -a $LOG_FILE
 
         # If staging deletion script succeded delete the file
         if [ $? -eq 0 ] ; then

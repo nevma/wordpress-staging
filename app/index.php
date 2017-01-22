@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 
 <?php
-    require_once( 'settings.php' );
-    require_once( 'functions.php' );
+    require_once( 'inc/settings.php' );
+    require_once( 'inc/functions.php' );
 ?>
 
 <html lang = "en">
@@ -94,13 +94,14 @@
                     ?>
                     <p>
                         <a href = "<?php echo $url; ?>" title = "Home">Home</a> &bull;
-                        <a href = "?action=help" title = "Home">Help</a> &bull;
                         <a href = "<?php echo $url; ?>" title = "Refresh">Refresh</a> &bull;
-                        Show log lines:
-                        <input class = "inline text-center" type = "text" name = "log-length" ID = "log-length" value = "<?php echo $log_length ?>" placeholder = "100" size = "3" />
+                        <a href = "?action=help" title = "Home">Help</a> &bull;
+                        Show last <input class = "inline text-center" type = "text" name = "log-length" ID = "log-length" value = "<?php echo $log_length ?>" placeholder = "100" size = "3" /> log lines:
                         <a href = "?action=log" class = "button button-small action-log" title = "View log">Go</a>
                     </p>
                 </header>
+
+                <?php ensure_directories(); ?>
 
                 <?php check_settings(); ?>
 

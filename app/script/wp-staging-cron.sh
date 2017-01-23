@@ -12,7 +12,7 @@ DIR=`readlink -f $DIR`
 LOCK_FILE=$DIR/staging.lock
 
 if [ -f $LOCK_FILE ] ; then
-    exit 0
+    exit 1
 fi
 
 # Create a lock file in order not to run multiple times
@@ -21,7 +21,9 @@ touch $LOCK_FILE
 
 
 # Read basic settings
-source $DIR/dist/bin/wp-staging-config.sh
+SETTINGS_FILE=$DIR/../inc/settings.php
+BASE_URL=`cat $SETTINGS_FILE | grep \'BASE_URL\' | cut -d \' -f 4`
+BASE_DIRECTORY=`cat $SETTINGS_FILE | grep \'BASE_DIRECTORY\' | cut -d \' -f 4`
 
 
 
@@ -55,7 +57,7 @@ else
         echo Source directory $SOURCE_DIRECTORY | tee -a $LOG_FILE
 
         # Call the website staging creation script
-        $DIR/dist/bin/wp-staging-create.sh $SOURCE_DIRECTORY $STAGING_NAME | tee -a $LOG_FILE
+        $DIR/dist/bin/wp-staging-create.sh --base-url=$BASE_URL --base-directory=$BASE_DIRECTORY --source-directory=$SOURCE_DIRECTORY --staging-name=$STAGING_NAME | tee -a $LOG_FILE
 
         # If staging creation script succeded move the file to the list of existing staging websites
         if [ $? -eq 0 ] ; then
@@ -91,7 +93,7 @@ else
         echo Staging directory $STAGING_DIRECTORY | tee -a $LOG_FILE
 
         # Call the website staging deletion script
-        $DIR/dist/bin/wp-staging-delete.sh $STAGING_DIRECTORY | tee -a $LOG_FILE
+        $DIR/dist/bin/wp-staging-delete.sh --staging-directory=$STAGING_DIRECTORY | tee -a $LOG_FILE
 
         # If staging deletion script succeded delete the file
         if [ $? -eq 0 ] ; then

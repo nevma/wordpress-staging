@@ -1,5 +1,69 @@
 #!/bin/bash
 
+
+
+################################################################################
+#                                                                              #
+#   ██████╗                                                                    #
+#  ██╔═████╗    Read and parse command line parameters.                        #
+#  ██║██╔██║                                                                   #
+#  ████╔╝██║                                                                   #
+#  ╚██████╔╝ ██                                                                #
+#   ╚═════╝                                                                    #
+#                                                                              #
+################################################################################
+
+
+
+# Parse command line parameters
+for ARG do
+
+    NAME=`echo $ARG | cut -d = -f 1`
+    VALUE=`echo $ARG | cut -d = -f 2`
+
+    case $NAME in
+        "--base-url")
+            BASE_URL=$VALUE
+        ;;
+        "--base-directory")
+            BASE_DIRECTORY=$VALUE
+            BASE_DIRECTORY=`readlink -f $BASE_DIRECTORY`
+        ;;
+        "--source-directory")
+            SOURCE_DIRECTORY=$VALUE
+            SOURCE_DIRECTORY=`readlink -f $SOURCE_DIRECTORY`
+        ;;
+        "--staging-name")
+            STAGING_NAME=$VALUE
+        ;;
+    esac
+
+done
+
+
+
+# Check if necessary command line parameters have been given
+if [[ -z "${BASE_URL// }" || 
+      -z "${BASE_DIRECTORY// }" ||
+      -z "${SOURCE_DIRECTORY// }" ||
+      -z "${STAGING_NAME// }" ]] ; then 
+      
+    echo
+    echo \*\* Error: correct usage is
+    echo 
+    echo ./wp-staging-create.sh
+    echo
+    echo "    "--base-url=\<The base url from which staging websites are accessed\>
+    echo "    "--base-directory=\<The base directory where the staging websites are copied\>
+    echo "    "--source-directory=\<The directory of the website to create a staging from\>
+    echo "    "--staging-name=\<A code name for the staging website to be created\>
+    echo
+    echo You must provide all necessary parameters!
+    echo
+    exit 1
+
+fi
+
 echo
 echo Creating WordPress staging website
 echo ==================================
@@ -9,30 +73,8 @@ echo
 
 ################################################################################
 #                                                                              #
-#   ██████╗                                                                    #
-#  ██╔═████╗    Basic settings for the staging websites that will be created.  #
-#  ██║██╔██║    Set them once for all your staging websites.                   #
-#  ████╔╝██║                                                                   #
-#  ╚██████╔╝ ██                                                                #
-#   ╚═════╝                                                                    #
-#                                                                              #
-################################################################################
-
-
-
-# Get this file's directory path
-DIR=`dirname $0`
-DIR=`readlink -f $DIR`
-
-# Import settings script
-source $DIR/wp-staging-config.sh
-
-
-
-################################################################################
-#                                                                              #
 #   ██╗                                                                        #
-#  ███║    Read the configuration file and prepare the necessary variables.    #
+#  ███║    Read the configuration and prepare the necessary variables.         #
 #  ╚██║                                                                        #
 #   ██║                                                                        #
 #   ██║ ██                                                                     #
@@ -44,19 +86,7 @@ source $DIR/wp-staging-config.sh
 
 echo 1. Reading configuration
 
-# Check if adequate command line parameters have been given
-if [ $# -ne 2 ]; then
-    echo
-    echo \*\* Error: correct usage is $0 \<SOURCE_DIRECTORY\> \<STAGING_NAME\>
-    echo
-    exit 1
-fi
-
-# Read command line parameters
-SOURCE_DIRECTORY=`readlink -f $1`
-STAGING_NAME=$2
-
-# Check if base directory exists
+# Check if base directory doesn't exist
 if [ ! -d $BASE_DIRECTORY ]; then
     echo
     echo \*\* Error: base directory does not exist $BASE_DIRECTORY
@@ -64,7 +94,7 @@ if [ ! -d $BASE_DIRECTORY ]; then
     exit 1
 fi
 
-# Check if source directory exists
+# Check if source directory already exists
 if [ ! -d $SOURCE_DIRECTORY ]; then
     echo
     echo \*\* Error: source directory does not exist $SOURCE_DIRECTORY
@@ -72,7 +102,23 @@ if [ ! -d $SOURCE_DIRECTORY ]; then
     exit 1
 fi
 
-# Read source installation
+# Check if staging name is valid
+if [[ ! $STAGING_NAME =~ ^[a-zA-Z0-9\-]+$ ]]; then
+    echo
+    echo \*\* Error: staging name $STAGING_NAME should only contain characters - \(that\'s a dash\), a-z, A-Z and 0-9
+    echo
+    exit 1
+fi
+
+# Check if target directory already exists
+if [ -d $BASE_DIRECTORY/$STAGING_NAME ]; then
+    echo
+    echo \*\* Error: target directory already exists $BASE_DIRECTORY/$STAGING_NAME
+    echo
+    exit 1
+fi
+
+# Read source installation WordPress config file
 SOURCE_WP_CONFIG=$SOURCE_DIRECTORY/wp-config.php
 
 # Check if source directory is actually a WordPress installation
@@ -83,42 +129,19 @@ if [ ! -f $SOURCE_WP_CONFIG ]; then
     exit 1
 fi
 
-# Prepare source installation variables
+
+
+# Prepare source database variables
 SOURCE_DB_HOST=`cat $SOURCE_WP_CONFIG | grep \'DB_HOST\' | cut -d \' -f 4`
 SOURCE_DB_NAME=`cat $SOURCE_WP_CONFIG | grep \'DB_NAME\' | cut -d \' -f 4`
 SOURCE_DB_USER=`cat $SOURCE_WP_CONFIG | grep \'DB_USER\' | cut -d \' -f 4`
 SOURCE_DB_PASSWORD=`cat $SOURCE_WP_CONFIG | grep \'DB_PASSWORD\' | cut -d \' -f 4`
 
-# Prepare target installation variables
+# Prepare target database installation variables
 TARGET_DB_HOST=$SOURCE_DB_HOST
 TARGET_DB_NAME=$STAGING_NAME
 TARGET_DB_USER=$SOURCE_DB_USER
 TARGET_DB_PASSWORD=$SOURCE_DB_PASSWORD
-
-TARGET_WP_CONFIG=$BASE_DIRECTORY/$STAGING_NAME/wp-config.php
-TARGET_URL=$BASE_URL/$STAGING_NAME
-
-# Source database dump file
-DB_DUMP_FILE=$BASE_DIRECTORY/$STAGING_NAME/$SOURCE_DB_NAME.sql
-
-# Output log file
-LOG_FILE=staging.$STAGING_NAME.log
-
-# Check if staging name is valid
-if [[ ! $STAGING_NAME =~ ^[a-zA-Z0-9\-]+$ ]]; then
-    echo
-    echo \*\* Error: staging name $STAGING_NAME should only contain characters - \(that\'s a dash\), a-z, A-Z and 0-9
-    echo
-    exit 1
-fi
-
-# Check if target directory exists
-if [ -d $BASE_DIRECTORY/$STAGING_NAME ]; then
-    echo
-    echo \*\* Error: target directory already exists $BASE_DIRECTORY/$STAGING_NAME
-    echo
-    exit 1
-fi
 
 # Check if target database already exists
 TEST_DB_EXISTS=`mysql -e "show databases like '$TARGET_DB_NAME'";`
@@ -130,7 +153,27 @@ if [ ! -z "${TEST_DB_EXISTS// }" ]; then
     exit 1
 fi
 
-# Find out target directory owning user and group
+# Target installation WordPress config file
+TARGET_WP_CONFIG=$BASE_DIRECTORY/$STAGING_NAME/wp-config.php
+
+# Target installation url
+TARGET_URL=$BASE_URL/$STAGING_NAME
+
+# Source database dump file
+DB_DUMP_FILE=$BASE_DIRECTORY/$STAGING_NAME/$SOURCE_DB_NAME.sql
+
+# Output log file
+LOG_FILE=staging.$STAGING_NAME.log
+
+
+
+# Get this file's directory path
+DIR=`dirname $0`
+DIR=`readlink -f $DIR`
+
+
+
+# Find out target directory owner user and group
 TARGET_FS_USER=`stat -c "%U" $BASE_DIRECTORY`
 TARGET_FS_GROUP=`stat -c "%G" $BASE_DIRECTORY`
 
@@ -165,8 +208,8 @@ chmod ugo+rx $BASE_DIRECTORY/$STAGING_NAME
 ################################################################################
 #                                                                              #
 #  ██████╗                                                                     #
-#  ╚════██╗     Dump the source database to a file and make necessary          #
-#   █████╔╝     replacements.                                                  #
+#  ╚════██╗     Dump the source database to a file.                            #
+#   █████╔╝                                                                    #
 #   ╚═══██╗                                                                    #
 #  ██████╔╝ ██                                                                 #
 #  ╚═════╝                                                                     #
@@ -244,9 +287,9 @@ php -f $DIR/../srdb/srdb.cli.php -- -v false -h $TARGET_DB_HOST -n $TARGET_DB_NA
 
 ################################################################################
 #                                                                              #
-#   ██████╗     Update the target installation wp-config.php file, set the     #
-#  ██╔════╝     target database name but leave the source database user.       #
-#  ███████╗                                                                    #
+#   ██████╗                                                                    #
+#  ██╔════╝     Update the target installation wp-config.php file, set the     #
+#  ███████╗     target database name but leave the source database user.       #
 #  ██╔═══██╗                                                                   #
 #  ╚██████╔╝ ██                                                                #
 #   ╚═════╝                                                                    #
@@ -271,7 +314,7 @@ replace -s "$TARGET_DB_NAME_WP_CONFIG" "$TARGET_DB_NAME_WP_CONFIG_REPLACED" -- $
 ################################################################################
 #                                                                              #
 #  ███████╗                                                                    #
-#  ╚════██║    Update the target htaccess file because now we are in a         #
+#  ╚════██║    Update the target .htaccess file because now we are in a        #
 #      ██╔╝    subdirectory.                                                   #
 #     ██╔╝                                                                     #
 #     ██║   ██                                                                 #

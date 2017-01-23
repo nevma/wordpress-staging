@@ -1,10 +1,5 @@
 #!/bin/bash
 
-echo
-echo Cleaning up staging site
-echo ========================
-echo
-
 
 
 ################################################################################
@@ -20,18 +15,45 @@ echo
 
 
 
-echo 1. Reading parameters
+# Parse command line parameters
+for ARG do
 
-# Check if adequate command line parameters have been given
-if [ $# -ne 1 ]; then
+    NAME=`echo $ARG | cut -d = -f 1`
+    VALUE=`echo $ARG | cut -d = -f 2`
+
+    case $NAME in
+        "--staging-directory")
+            STAGING_DIRECTORY=$VALUE
+            STAGING_DIRECTORY=`readlink -f $STAGING_DIRECTORY`
+        ;;
+    esac
+
+done
+
+
+
+# Check if necessary command line parameters have been given
+if [[ -z "${STAGING_DIRECTORY// }" ]] ; then 
+
     echo
-    echo \*\* Error: correct usage is $0 \<STAGING_DIRECTORY\>
+    echo \*\* Error: correct usage is
+    echo 
+    echo ./wp-staging-delete.sh
+    echo
+    echo "    "--staging-directory=\<The directory where the staging websites is located\>
+    echo
+    echo You must provide all necessary parameters!
     echo
     exit 1
+    
 fi
 
-# Prepare source installation variables
-STAGING_DIRECTORY=`readlink -f $1`
+echo
+echo Cleaning up staging site
+echo ========================
+echo
+
+
 
 # Check if target directory exists
 if [ ! -d $STAGING_DIRECTORY ]; then
@@ -70,7 +92,7 @@ STAGING_DB_NAME=`cat $STAGING_WP_CONFIG | grep \'DB_NAME\' | cut -d \' -f 4`
 
 
 
-echo 2. Delete staging website files
+echo 1. Delete staging website files
 
 rm -rf $STAGING_DIRECTORY
 
@@ -89,7 +111,7 @@ rm -rf $STAGING_DIRECTORY
 
 
 
-echo 3. Delete staging website database
+echo 2. Delete staging website database
 
 mysql -e "DROP database \`$STAGING_DB_NAME\`;"
 
@@ -109,7 +131,7 @@ mysql -e "DROP database \`$STAGING_DB_NAME\`;"
 
 
 # Echo staging website deletion data
-echo 4. Done
+echo 3. Done
 echo
 printf "Staging directory : $STAGING_DIRECTORY\n"
 printf "Staging database  : $STAGING_DB_NAME\n"

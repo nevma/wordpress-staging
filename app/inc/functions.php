@@ -101,7 +101,7 @@
                 <li><code>&lt;ROOT_DIR&gt;/inc/settings.php</code></li>
             </ul>
             <p>
-                2. Set the following scripts to be executable:
+                2. Set the following scripts to be executable (+x):
             </p>
             <ul>
                 <li><code>&lt;ROOT_DIR&gt;/script/wp-staging.cron.sh</code></li>
@@ -109,10 +109,11 @@
                 <li><code>&lt;ROOT_DIR&gt;/script/dist/bin/wp-staging-delete.sh</code></li>
             </ul>
             <p>
-                3. Set the following script to run in your cron jobs:
+                3. Set the following script to run in the system cron jobs:
             </p>
             <ul>
-                <li>To run every 2 minutes add to your <code>crontab</code></li>
+                <li>Prefer the <code>root</code> user and</li>
+                <li>In order to run every 2 minutes add to your <code>crontab</code></li>
                 <li><code>*/2 * * * * &lt;ROOT_DIR&gt;/script/wp-staging.cron.sh &gt; /dev/null 2&gt;&amp;1</code></li>
             </ul>
             <p>

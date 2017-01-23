@@ -97,15 +97,14 @@
             </p>
             <ul>
                 <li><code>BASE_URL</code> and</li>
-                <li><code>BASE_DIRECTORY</code> in the script</li>
-                <li><code>&lt;ROOT_DIR&gt;/script/dist/bin/wp-staging-config.sh</code></li>
+                <li><code>BASE_DIRECTORY</code> in</li>
+                <li><code>&lt;ROOT_DIR&gt;/inc/settings.php</code></li>
             </ul>
             <p>
                 2. Set the following scripts to be executable:
             </p>
             <ul>
-                <li><code>&lt;ROOT_DIR&gt;/script/wp-staging-config.sh</code></li>
-                <li><code>&lt;ROOT_DIR&gt;/script/dist/bin/wp-staging-config.sh</code></li>
+                <li><code>&lt;ROOT_DIR&gt;/script/wp-staging.cron.sh</code></li>
                 <li><code>&lt;ROOT_DIR&gt;/script/dist/bin/wp-staging-create.sh</code></li>
                 <li><code>&lt;ROOT_DIR&gt;/script/dist/bin/wp-staging-delete.sh</code></li>
             </ul>

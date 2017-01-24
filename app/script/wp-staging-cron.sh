@@ -2,6 +2,12 @@
 
 
 
+# Get this file's directory path
+DIR=`dirname $0`
+DIR=`readlink -f $DIR`
+
+
+
 # If lock file exists previous instance is already running
 LOCK_FILE=$DIR/staging.lock
 
@@ -11,12 +17,6 @@ fi
 
 # Create a lock file in order to not run multiple times over
 touch $LOCK_FILE
-
-
-
-# Get this file's directory path
-DIR=`dirname $0`
-DIR=`readlink -f $DIR`
 
 
 
@@ -108,8 +108,12 @@ else
 
         echo Staging directory $STAGING_DIRECTORY | tee -a $LOG_FILE
 
+
+
         # Call the website staging deletion script
         $DIR/dist/bin/wp-staging-delete.sh --staging-directory=$STAGING_DIRECTORY | tee -a $LOG_FILE
+
+        
 
         # If staging deletion script succeded delete the file
         if [ $? -eq 0 ] ; then

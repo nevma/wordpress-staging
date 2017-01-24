@@ -64,7 +64,7 @@
 
 
     /**
-     * Helper function to show information and error messages.
+     * Utility function to show information and error messages.
      */
 
     function create_message ( $message, $type='info' ) {
@@ -93,33 +93,16 @@
 
         create_message(
             '<p>
-                1. Set the necessary parameters:
+                In order for the app to work you need to to the following:
             </p>
-            <ul>
-                <li><code>BASE_URL</code> and</li>
-                <li><code>BASE_DIRECTORY</code> in</li>
-                <li><code>&lt;ROOT_DIR&gt;/inc/settings.php</code></li>
-            </ul>
-            <p>
-                2. Set the following scripts to be executable (+x):
-            </p>
-            <ul>
-                <li><code>&lt;ROOT_DIR&gt;/script/wp-staging.cron.sh</code></li>
-                <li><code>&lt;ROOT_DIR&gt;/script/dist/bin/wp-staging-create.sh</code></li>
-                <li><code>&lt;ROOT_DIR&gt;/script/dist/bin/wp-staging-delete.sh</code></li>
-            </ul>
-            <p>
-                3. Set the following script to run in the system cron jobs:
-            </p>
-            <ul>
-                <li>Prefer the <code>root</code> user and</li>
-                <li>In order to run every 2 minutes add to your <code>crontab</code></li>
-                <li><code>*/2 * * * * &lt;ROOT_DIR&gt;/script/wp-staging.cron.sh &gt; /dev/null 2&gt;&amp;1</code></li>
-            </ul>
+            <ol>
+                <li>Set the necessary parameters in: <br /> <code>&lt;ROOT_DIR&gt;/inc/settings.php</code></li>
+                <li>Set the cron script to be executable: <br /> <code>chmod u+x &lt;ROOT_DIR&gt;/script/wp-staging-cron.sh</code></li>
+                <li>Set the cron script to run in the system cron jobs: <br /> <code>*/2 * * * * &lt;ROOT_DIR&gt;/script/wp-staging.cron.sh &gt; /dev/null 2&gt;&amp;1</code></li>
+            </ol>
             <p>
                 The <code>&lt;ROOT_DIR&gt;</code> is the root directory of this web application.
             </p>
-            <hr />
             <p>
                 Your current settings are:
             </p>
@@ -139,7 +122,7 @@
 
     function show_log () {
 
-        $length = isset( $_GET['length'] ) ? intval( $_GET['length'] ) : 100;
+        $length = isset( $_GET['length'] ) ? intval( $_GET['length'] ) : 100-1;
 
         $log = file_get_contents( 'data/log/run.log' );
         $log_array = explode( "\n", $log );
@@ -147,7 +130,7 @@
         $log_array = array_slice( $log_array, $total-$length, $total );
         $log_message = implode( '<br />', $log_array );
 
-        create_message( '<p>Here are the last ' . $length . ' log lines:</p> <hr /> <p><small><code>'. $log_message . '</code></small></p>' );
+        create_message( '<p>Here are the last ' . $length . ' log lines:</p><p><small><code>'. $log_message . '</code></small></p>' );
 
     }
 

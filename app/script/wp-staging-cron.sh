@@ -2,12 +2,6 @@
 
 
 
-# Get this file's directory path
-DIR=`dirname $0`
-DIR=`readlink -f $DIR`
-
-
-
 # If lock file exists previous instance is already running
 LOCK_FILE=$DIR/staging.lock
 
@@ -15,8 +9,14 @@ if [ -f $LOCK_FILE ] ; then
     exit 1
 fi
 
-# Create a lock file in order not to run multiple times
+# Create a lock file in order to not run multiple times over
 touch $LOCK_FILE
+
+
+
+# Get this file's directory path
+DIR=`dirname $0`
+DIR=`readlink -f $DIR`
 
 
 
@@ -27,7 +27,14 @@ BASE_DIRECTORY=`cat $SETTINGS_FILE | grep \'BASE_DIRECTORY\' | cut -d \' -f 4`
 
 
 
-# The log file name
+# Make sure executable files are executable
+chmod u+x $DIR/dist/bin/wp-staging-create.sh
+chmod u+x $DIR/dist/bin/wp-staging-delete.sh
+chmod u+x $DIR/dist/wpcli/wp-cli.phar
+
+
+
+# The log file
 LOG_FILE=`dirname $0`/../data/log/run.log
 
 echo -- `date` -- | tee -a $LOG_FILE
@@ -56,8 +63,17 @@ else
         echo Staging name $STAGING_NAME | tee -a $LOG_FILE
         echo Source directory $SOURCE_DIRECTORY | tee -a $LOG_FILE
 
+
         # Call the website staging creation script
         $DIR/dist/bin/wp-staging-create.sh --base-url=$BASE_URL --base-directory=$BASE_DIRECTORY --source-directory=$SOURCE_DIRECTORY --staging-name=$STAGING_NAME | tee -a $LOG_FILE
+
+
+        # Deactivate certain WordPress plugins
+        $DIR/dist/wpcli/wp-cli.phar --path=$BASE_DIRECTORY/$SOURCE_DIRECTORY plugin deactivate jetpack
+        $DIR/dist/wpcli/wp-cli.phar --path=$BASE_DIRECTORY/$SOURCE_DIRECTORY plugin deactivate litespeed-cache
+        $DIR/dist/wpcli/wp-cli.phar --path=$BASE_DIRECTORY/$SOURCE_DIRECTORY plugin deactivate redis-cache
+        $DIR/dist/wpcli/wp-cli.phar --path=$BASE_DIRECTORY/$SOURCE_DIRECTORY plugin deactivate varnish-http-purge
+        
 
         # If staging creation script succeded move the file to the list of existing staging websites
         if [ $? -eq 0 ] ; then

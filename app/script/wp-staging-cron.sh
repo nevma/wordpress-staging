@@ -69,11 +69,11 @@ else
 
 
         # Deactivate certain WordPress plugins
-        $DIR/dist/wpcli/wp-cli.phar --path=$BASE_DIRECTORY/$SOURCE_DIRECTORY plugin deactivate jetpack
-        $DIR/dist/wpcli/wp-cli.phar --path=$BASE_DIRECTORY/$SOURCE_DIRECTORY plugin deactivate litespeed-cache
-        $DIR/dist/wpcli/wp-cli.phar --path=$BASE_DIRECTORY/$SOURCE_DIRECTORY plugin deactivate redis-cache
-        $DIR/dist/wpcli/wp-cli.phar --path=$BASE_DIRECTORY/$SOURCE_DIRECTORY plugin deactivate varnish-http-purge
-        
+        $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$SOURCE_DIRECTORY plugin deactivate jetpack > &/dev/null
+        $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$SOURCE_DIRECTORY plugin deactivate litespeed-cache > &/dev/null
+        $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$SOURCE_DIRECTORY plugin deactivate redis-cache > &/dev/null
+        $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$SOURCE_DIRECTORY plugin deactivate varnish-http-purge > &/dev/null
+
 
         # If staging creation script succeded move the file to the list of existing staging websites
         if [ $? -eq 0 ] ; then

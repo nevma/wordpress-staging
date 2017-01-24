@@ -69,10 +69,10 @@ else
 
 
         # Deactivate certain WordPress plugins
-        $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$SOURCE_DIRECTORY plugin deactivate jetpack > &/dev/null
-        $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$SOURCE_DIRECTORY plugin deactivate litespeed-cache > &/dev/null
-        $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$SOURCE_DIRECTORY plugin deactivate redis-cache > &/dev/null
-        $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$SOURCE_DIRECTORY plugin deactivate varnish-http-purge > &/dev/null
+        $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate jetpack &> /dev/null
+        $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate litespeed-cache &> /dev/null
+        $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate redis-cache &> /dev/null
+        $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate varnish-http-purge &> /dev/null
 
 
         # If staging creation script succeded move the file to the list of existing staging websites
@@ -113,7 +113,7 @@ else
         # Call the website staging deletion script
         $DIR/dist/bin/wp-staging-delete.sh --staging-directory=$STAGING_DIRECTORY | tee -a $LOG_FILE
 
-        
+
 
         # If staging deletion script succeded delete the file
         if [ $? -eq 0 ] ; then

@@ -18,3 +18,7 @@ Give them the absolute path to the cron script.
 Detect if the cron script has actually been set!
 
 Email user when each action is complete.
+
+What if cron fails and lock file is always there?
+
+Check all command return code.

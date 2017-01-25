@@ -64,21 +64,23 @@ else
         echo Source directory $SOURCE_DIRECTORY | tee -a $LOG_FILE
 
 
+
         # Call the website staging creation script
         $DIR/dist/bin/wp-staging-create.sh --base-url=$BASE_URL --base-directory=$BASE_DIRECTORY --source-directory=$SOURCE_DIRECTORY --staging-name=$STAGING_NAME | tee -a $LOG_FILE
-
-
-        # Deactivate certain WordPress plugins
-        $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate jetpack &> /dev/null
-        $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate litespeed-cache &> /dev/null
-        $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate redis-cache &> /dev/null
-        $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate varnish-http-purge &> /dev/null
-
 
         # If staging creation script succeded move the file to the list of existing staging websites
         if [ $? -eq 0 ] ; then
             mv $FILE $DIR/../data/cur
         fi
+
+
+
+        # Deactivate certain WordPress plugins
+        $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate iwp-client
+        $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate jetpack
+        $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate litespeed-cache
+        $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate redis-cache
+        $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate varnish-http-purge
 
         echo | tee -a $LOG_FILE
 
@@ -112,8 +114,6 @@ else
 
         # Call the website staging deletion script
         $DIR/dist/bin/wp-staging-delete.sh --staging-directory=$STAGING_DIRECTORY | tee -a $LOG_FILE
-
-
 
         # If staging deletion script succeded delete the file
         if [ $? -eq 0 ] ; then

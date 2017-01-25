@@ -278,10 +278,10 @@ mysql $TARGET_DB_NAME < $DB_DUMP_FILE
 echo 5. Replacing target database strings
 
 # Replace occurences of source directory with target directory
-php -f $DIR/../srdb/srdb.cli.php -- -v false -h $TARGET_DB_HOST -n $TARGET_DB_NAME -u $TARGET_DB_USER -p $TARGET_DB_PASSWORD -s $SOURCE_DIRECTORY -r $BASE_DIRECTORY/$STAGING_NAME &>/dev/null
+php -f $DIR/../srdb/srdb.cli.php -- -v false -h $TARGET_DB_HOST -n $TARGET_DB_NAME -u $TARGET_DB_USER -p $TARGET_DB_PASSWORD -s $SOURCE_DIRECTORY -r $BASE_DIRECTORY/$STAGING_NAME
 
 # Replace occurences of source url with target url
-php -f $DIR/../srdb/srdb.cli.php -- -v false -h $TARGET_DB_HOST -n $TARGET_DB_NAME -u $TARGET_DB_USER -p $TARGET_DB_PASSWORD -s $SOURCE_URL -r $TARGET_URL &>/dev/null  
+php -f $DIR/../srdb/srdb.cli.php -- -v false -h $TARGET_DB_HOST -n $TARGET_DB_NAME -u $TARGET_DB_USER -p $TARGET_DB_PASSWORD -s $SOURCE_URL -r $TARGET_URL
 
 
 

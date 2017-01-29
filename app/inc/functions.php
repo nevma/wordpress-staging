@@ -1,6 +1,22 @@
 <?php
 
     /**
+     * Gets the base url of the current app.
+     */
+
+    function get_base_url () {
+
+        $url = $_SERVER['REQUEST_URI'];
+        $pos = strpos( $url, '?' );
+        if ( $pos !== false ) {
+            $url = substr( $_SERVER['REQUEST_URI'], 0, $pos );
+        }
+
+        return $url;
+
+    }
+
+    /**
      * Gets the websites who are currently in staging.
      */
 
@@ -41,6 +57,11 @@
             case 'create' :
 
                 create_website_in_staging();
+                break;
+            
+            case 'create-success' :
+
+                create_website_in_staging_success();
                 break;
             
             case 'delete' :
@@ -207,7 +228,6 @@
             return;
             
         }
-
 
         $staging_path = BASE_DIRECTORY . '/' . $name;
 

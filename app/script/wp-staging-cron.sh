@@ -82,6 +82,8 @@ else
         $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate redis-cache
         $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate varnish-http-purge
 
+        $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME cache flush
+
         echo | tee -a $LOG_FILE
 
     done

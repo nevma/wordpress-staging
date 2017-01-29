@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-
 <?php
     require_once( 'inc/settings.php' );
     require_once( 'inc/functions.php' );
 ?>
+
+<!DOCTYPE html>
 
 <html lang = "en">
 
@@ -80,22 +80,17 @@
 
                 <header>
                     <h1>WordPress staging website creation</h1>
-                    <?php 
-                        $url = $_SERVER['REQUEST_URI'];
-                        $pos = strpos( $url, '?' );
-                        if ( $pos !== false ) {
-                            $url = substr( $_SERVER['REQUEST_URI'], 0, $pos );
-                        }
-
-                        $log_length = intval( isset( $_GET['log-length'] ) ? $_GET['log-length'] : '0' );
-                        if ( $log_length <= 0 ) {
-                            $log_length = 100;
-                        }
-                    ?>
                     <p>
+                        <?php $url = get_base_url(); ?>
                         <a href = "<?php echo $url; ?>" title = "Home">Home</a> &bull;
                         <a href = "<?php echo $url; ?>" title = "Refresh">Refresh</a> &bull;
                         <a href = "?action=help" title = "Home">Help</a> &bull;
+                        <?php
+                            $log_length = intval( isset( $_GET['log-length'] ) ? $_GET['log-length'] : '0' );
+                            if ( $log_length <= 0 ) {
+                                $log_length = 100;
+                            }
+                        ?>
                         Show last <input class = "inline text-center" type = "text" name = "log-length" ID = "log-length" value = "<?php echo $log_length ?>" placeholder = "100" size = "3" /> log lines:
                         <a href = "?action=log" class = "button button-small action-log" title = "View log">Go</a>
                     </p>

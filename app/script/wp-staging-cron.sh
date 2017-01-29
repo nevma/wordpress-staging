@@ -8,16 +8,6 @@ DIR=`readlink -f $DIR`
 
 
 
-# NAME=$(awk -F "=" '/^name=/ {print $2}' $DIR/ini.ini | tr -d ' \t\n\r')
-# SURNAME=$(awk -F "=" '/^surname=/ {print $2}' $DIR/ini.ini | tr -d ' \t\n\r')
-# AGE=$(awk -F "=" '/^age=/ {print $2}' $DIR/ini.ini | tr -d ' \t\n\r')
-
-# echo -$NAME-
-# echo -$SURNAME-
-# echo -$AGE-
-
-
-
 # If lock file exists previous instance is already running
 LOCK_FILE=$DIR/staging.lock
 
@@ -63,8 +53,6 @@ else
 
     # Iterate over config files for staging websites to create
     for FILE in $DIR/../data/new/*; do
-
-        FILE=`readlink -f $FILE`        
 
         echo Processing create file $FILE | tee -a $LOG_FILE
 

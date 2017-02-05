@@ -39,13 +39,16 @@ call the `wp-staging-delete.sh` script and give the following parameter:
 ## Web app
 
 The `/app/` directory provides a special web application wrapper that enables the
-easy usage of the scripts. You may install it in a CPanel user that will hold your
-staging websites and then follow the instructions in the `Help` menu. Note that it 
-will require  settig a cron script in your system.
+easy usage of the scripts. You may install it in the public_html directory of a
+CPanel user that will hold your staging websites and then follow the instructions
+in the `Help` menu. Note that it will require  setting a cron job in your system's
+crontab.
 
 ## Credits
 
 Uses the ["Interconnect/it Database search and replacement script"](https://interconnectit.com/products/search-and-replace-for-wordpress-databases/).
+
+Uses the ["WordPress command line interface (WP-CLI)"](http://wp-cli.org/commands/).
 
 ## Licence
 

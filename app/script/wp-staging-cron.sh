@@ -8,6 +8,10 @@ DIR=`readlink -f $DIR`
 
 
 
+# Detect php cli version (vs the cgi version)
+source $DIR/dist/bin/wp-staging-php-cli.sh.sh
+PHP_CLI_PATH=$( detect_php_cli )
+
 # NAME=$(awk -F "=" '/^name=/ {print $2}' $DIR/ini.ini | tr -d ' \t\n\r')
 # SURNAME=$(awk -F "=" '/^surname=/ {print $2}' $DIR/ini.ini | tr -d ' \t\n\r')
 # AGE=$(awk -F "=" '/^age=/ {print $2}' $DIR/ini.ini | tr -d ' \t\n\r')
@@ -32,6 +36,7 @@ touch $LOCK_FILE
 
 # Read basic settings
 SETTINGS_FILE=$DIR/../inc/settings.php
+
 BASE_URL=`cat $SETTINGS_FILE | grep \'BASE_URL\' | cut -d \' -f 4`
 BASE_DIRECTORY=`cat $SETTINGS_FILE | grep \'BASE_DIRECTORY\' | cut -d \' -f 4`
 
@@ -40,7 +45,9 @@ BASE_DIRECTORY=`cat $SETTINGS_FILE | grep \'BASE_DIRECTORY\' | cut -d \' -f 4`
 # Make sure executable files are executable
 chmod u+x $DIR/dist/bin/wp-staging-create.sh
 chmod u+x $DIR/dist/bin/wp-staging-delete.sh
+chmod u+x $DIR/dist/bin/wp-staging-php-cli.sh
 chmod u+x $DIR/dist/wpcli/wp-cli.phar
+chmod u+x $DIR/dist/srdb/srdb.cli.php
 
 
 
@@ -48,6 +55,7 @@ chmod u+x $DIR/dist/wpcli/wp-cli.phar
 LOG_FILE=`dirname $0`/../data/log/run.log
 
 echo -- `date` -- | tee -a $LOG_FILE
+echo Detected PHP CLI $PHP_CLI_PATH | tee -a $LOG_FILE
 echo | tee -a $LOG_FILE
 
 
@@ -62,7 +70,7 @@ if [ ! "$(ls -A $DIR/../data/new)" ]; then
 else
 
     # Iterate over config files for staging websites to create
-    for FILE in $DIR/../data/new/*; do
+    for FILE in $DIR/../data/new/* ; do
 
         FILE=`readlink -f $FILE`        
 
@@ -88,13 +96,20 @@ else
 
 
         # Deactivate certain WordPress plugins
-        $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate iwp-client
-        $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate jetpack
-        $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate litespeed-cache
-        $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate redis-cache
-        $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate varnish-http-purge
+        echo Deactivating unnecessary plugins
 
-        $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME cache flush
+        $PHP_CLI_PATH $DIR/dist/wpcli/wp-cli.phar --debug --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate iwp-client
+        $PHP_CLI_PATH $DIR/dist/wpcli/wp-cli.phar --debug --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate jetpack
+        $PHP_CLI_PATH $DIR/dist/wpcli/wp-cli.phar --debug --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate litespeed-cache
+        $PHP_CLI_PATH $DIR/dist/wpcli/wp-cli.phar --debug --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate redis-cache
+        $PHP_CLI_PATH $DIR/dist/wpcli/wp-cli.phar --debug --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate varnish-http-purge
+
+        $PHP_CLI_PATH $DIR/dist/wpcli/wp-cli.phar --debug --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate modirumeb-for-woocommerce2
+        $PHP_CLI_PATH $DIR/dist/wpcli/wp-cli.phar --debug --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate hellaspay-for-woocommerce2
+        $PHP_CLI_PATH $DIR/dist/wpcli/wp-cli.phar --debug --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate nbghps-for-woocommerce2
+        $PHP_CLI_PATH $DIR/dist/wpcli/wp-cli.phar --debug --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate modirum-for-woocommerce2
+
+        $PHP_CLI_PATH $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME cache flush
 
         echo | tee -a $LOG_FILE
 
@@ -114,7 +129,7 @@ if [ ! "$(ls -A $DIR/../data/del)" ]; then
 else
 
     # Iterate over config files for staging websites to delete
-    for FILE in $DIR/../data/del/*; do
+    for FILE in $DIR/../data/del/* ; do
 
         echo Processing delete file $FILE | tee -a $LOG_FILE
 

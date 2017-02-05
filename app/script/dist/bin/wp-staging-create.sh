@@ -179,6 +179,15 @@ TARGET_FS_GROUP=`stat -c "%G" $BASE_DIRECTORY`
 
 
 
+# Detect php cli version (vs the cgi version)
+source $DIR/wp-staging-php-cli.sh
+PHP_CLI_PATH=$( detect_php_cli )
+
+SRDB_CLI_PHP=`readlink -f $DIR/../srdb/srdb.cli.php`
+
+
+
+
 ################################################################################
 #                                                                              #
 #  ██████╗                                                                     #
@@ -278,10 +287,10 @@ mysql $TARGET_DB_NAME < $DB_DUMP_FILE
 echo 5. Replacing target database strings
 
 # Replace occurences of source directory with target directory
-php -f $DIR/../srdb/srdb.cli.php -- -v false -h $TARGET_DB_HOST -n $TARGET_DB_NAME -u $TARGET_DB_USER -p $TARGET_DB_PASSWORD -s $SOURCE_DIRECTORY -r $BASE_DIRECTORY/$STAGING_NAME
+$PHP_CLI_PATH -f $SRDB_CLI_PHP -- -v true -h $TARGET_DB_HOST -n $TARGET_DB_NAME -u $TARGET_DB_USER -p $TARGET_DB_PASSWORD -s $SOURCE_DIRECTORY -r $BASE_DIRECTORY/$STAGING_NAME
 
 # Replace occurences of source url with target url
-php -f $DIR/../srdb/srdb.cli.php -- -v false -h $TARGET_DB_HOST -n $TARGET_DB_NAME -u $TARGET_DB_USER -p $TARGET_DB_PASSWORD -s $SOURCE_URL -r $TARGET_URL
+$PHP_CLI_PATH -f $SRDB_CLI_PHP -- -v true -h $TARGET_DB_HOST -n $TARGET_DB_NAME -u $TARGET_DB_USER -p $TARGET_DB_PASSWORD -s $SOURCE_URL -r $TARGET_URL
 
 
 

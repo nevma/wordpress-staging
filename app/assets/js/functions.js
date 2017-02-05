@@ -7,5 +7,10 @@ jQuery( function () {
 
     });
 
+    $( '#websites-select' ).on( 'change', function () {
+
+        $( '#path' ).val( $( this ).val() );
+
+    });
 
 });

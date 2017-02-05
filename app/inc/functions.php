@@ -16,6 +16,8 @@
 
     }
 
+
+
     /**
      * Gets the websites who are currently in staging.
      */
@@ -34,6 +36,28 @@
         }
 
         return $stagings;
+
+    }
+
+
+
+    /**
+     * Gets the websites who are currently in staging.
+     */
+
+    function get_wordpress_websites () {
+
+        $websites_list_file = 'data/websites.list';
+
+        if ( ! file_exists( $websites_list_file ) ) {
+            return array();
+        }
+
+        $websites_list_string = file_get_contents( $websites_list_file );
+        $websites_list_array = explode( "\n", $websites_list_string );
+        $websites_list_array = array_diff( $websites_list_array, array( '' ) );
+
+        return $websites_list_array;
 
     }
 
@@ -143,15 +167,15 @@
 
     function show_log () {
 
-        $length = isset( $_GET['length'] ) ? intval( $_GET['length'] ) : 100-1;
+        $log_length = isset( $_GET['log-length'] ) ? intval( $_GET['log-length'] ) : 100-1;
 
         $log = file_get_contents( 'data/log/run.log' );
         $log_array = explode( "\n", $log );
         $total = sizeof( $log_array );
-        $log_array = array_slice( $log_array, $total-$length, $total );
+        $log_array = array_slice( $log_array, $total-$log_length, $total );
         $log_message = implode( '<br />', $log_array );
 
-        create_message( '<p>Here are the last ' . $length . ' log lines:</p><p><small><code>'. $log_message . '</code></small></p>' );
+        create_message( '<p>Here are the last ' . $log_length . ' log lines:</p><p><small><code>'. $log_message . '</code></small></p>' );
 
     }
 

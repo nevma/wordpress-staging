@@ -106,12 +106,24 @@
                     <h2>Create new staging website</h2>
                     <form action = "?action=create" method = "post" class = "row">
                         <div class = "small-column-30">
-                            <label for = "name">Staging name</label>
-                            <input type = "text" name = "name" id = "name" placeholder = "staging-website" />
+                            <label for = "name">Staging name [a-zA-Z0-9]</label>
+                            <input type = "text" name = "name" id = "name" placeholder = "name" />
                         </div>
                         <div class = "small-column-50">
-                            <label for = "path">Original website path</label>
-                            <input type = "text" name = "path" id = "path" placeholder = "/home/user/public_html/www.mywebsite.com" />
+                            <label for = "path">Original website path (just start typing)</label>
+                            <input list = "websites-list" name = "path" id = "path" placeholder = "/home/user/public_html/" />
+                            <datalist id = "websites-list">
+                                <?php foreach ( get_wordpress_websites() as $website ) : ?>
+                                    <option value = "<?php echo $website; ?>"><?php echo $website; ?></option>
+                                <?php endforeach; ?>
+                            </datalist>
+                            <label for = "path">Or choose an existing website</label>
+                            <select id = "websites-select">
+                                <?php foreach ( get_wordpress_websites() as $website ) : ?>
+                                    <option value = "<?php echo $website; ?>"><?php echo $website; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+
                         </div>
                         <div class = "small-column-20">
                             <br />

@@ -157,5 +157,10 @@ fi
 
 
 
+# Search for WordPress websites in the fileystem
+find /home -name wp-config.php -exec dirname {} \; | sort > $DIR/../data/websites.list
+
+
+
 # Remove the lock file
 rm -rf $LOCK_FILE

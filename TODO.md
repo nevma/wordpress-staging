@@ -1,4 +1,4 @@
-# TODO #
+# TODO
 
 Show staging websites registered for deletion.
 
@@ -18,3 +18,5 @@ Email user when each action is complete.
 What if cron fails and lock file is always there?
 
 Check all commands return codes.
+
+Make the deactivated plugins in the staging websites configurable in settings.

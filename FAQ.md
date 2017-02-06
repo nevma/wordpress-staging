@@ -16,3 +16,6 @@ this case the urls in the database are in the HTTP protocol whereas the database
 string replacements in the staging website occur against the HTTPS protocol.
 
 Beware of the plugins that the `app` deactivates in the staging environment.
+
+The `app` is unable to detect and take into account any custom `.htaccess`
+modifications. 

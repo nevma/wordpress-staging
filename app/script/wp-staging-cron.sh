@@ -7,16 +7,19 @@ DIR=`dirname $0`
 DIR=`readlink -f $DIR`
 
 
-
-# Attempt to hold settings in an INI file
-
+################################################################################
+#
+# Attempt to read settings from an INI file
+# 
 # NAME=$(awk -F "=" '/^name=/ {print $2}' $DIR/ini.ini | tr -d ' \t\n\r')
 # SURNAME=$(awk -F "=" '/^surname=/ {print $2}' $DIR/ini.ini | tr -d ' \t\n\r')
 # AGE=$(awk -F "=" '/^age=/ {print $2}' $DIR/ini.ini | tr -d ' \t\n\r')
-
+# 
 # echo -$NAME-
 # echo -$SURNAME-
 # echo -$AGE-
+# 
+################################################################################
 
 
 
@@ -85,7 +88,7 @@ else
         # Call the website staging creation script
         $DIR/dist/bin/wp-staging-create.sh --base-url=$BASE_URL --base-directory=$BASE_DIRECTORY --source-directory=$SOURCE_DIRECTORY --staging-name=$STAGING_NAME | tee -a $LOG_FILE
 
-        # If staging creation script succeded move the file to the list of existing staging websites
+        # If staging creation script succeeded move the file to the list of existing staging websites
         if [ $? -eq 0 ] ; then
             mv $FILE $DIR/../data/cur
         fi
@@ -123,7 +126,7 @@ else
         # Call the website staging deletion script
         $DIR/dist/bin/wp-staging-delete.sh --staging-directory=$STAGING_DIRECTORY | tee -a $LOG_FILE
 
-        # If staging deletion script succeded delete the file
+        # If staging deletion script succeeded delete the file
         if [ $? -eq 0 ] ; then
             rm -rf $FILE
         fi
@@ -137,6 +140,8 @@ fi
 
 
 # Search for WordPress websites in the fileystem
+echo Producing server websites list | tee -a $LOG_FILE
+echo | tee -a $LOG_FILE
 find /home -name wp-config.php -exec dirname {} \; | sort > $DIR/../data/websites.list
 
 

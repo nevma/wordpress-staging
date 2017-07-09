@@ -92,7 +92,7 @@ STAGING_DB_NAME=`cat $STAGING_WP_CONFIG | grep \'DB_NAME\' | cut -d \' -f 4`
 
 
 
-echo 1. Delete staging website files
+echo \#\#\# 1. Delete staging website files
 
 rm -rf $STAGING_DIRECTORY
 
@@ -111,7 +111,7 @@ rm -rf $STAGING_DIRECTORY
 
 
 
-echo 2. Delete staging website database
+echo \#\#\# 2. Delete staging website database
 
 mysql -e "DROP database \`$STAGING_DB_NAME\`;"
 
@@ -131,7 +131,7 @@ mysql -e "DROP database \`$STAGING_DB_NAME\`;"
 
 
 # Echo staging website deletion data
-echo 3. Done
+echo \#\#\# 3. Done
 echo
 printf "Staging directory : $STAGING_DIRECTORY\n"
 printf "Staging database  : $STAGING_DB_NAME\n"

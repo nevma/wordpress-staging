@@ -6,10 +6,9 @@ Show staging websites registered for creation.
 
 Do not copy all the uploads, just the most recent ones.
 
-Make settings file be created automatically.
-OR 
-Make settings file have placeholder names, so that you can inform the user if
-they have not set them even for the first time.
+Make settings file be created automatically or make settings file have
+placeholder names, so that you can inform the user if they have not set them
+even for the first time.
 
 Detect if the cron script has actually been set!
 

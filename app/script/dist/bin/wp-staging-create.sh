@@ -84,7 +84,10 @@ echo
 
 
 
-echo 1. Reading configuration
+echo \#\#\# 1. Reading configuration
+
+# Define target (staging) installation directory
+TARGET_DIRECTORY=$BASE_DIRECTORY/$STAGING_NAME
 
 # Check if base directory doesn't exist
 if [ ! -d $BASE_DIRECTORY ]; then
@@ -111,9 +114,9 @@ if [[ ! $STAGING_NAME =~ ^[a-zA-Z0-9\-]+$ ]]; then
 fi
 
 # Check if target directory already exists
-if [ -d $BASE_DIRECTORY/$STAGING_NAME ]; then
+if [ -d $TARGET_DIRECTORY ]; then
     echo
-    echo \*\* Error: target directory already exists $BASE_DIRECTORY/$STAGING_NAME
+    echo \*\* Error: target directory already exists $TARGET_DIRECTORY
     echo
     exit 1
 fi
@@ -137,7 +140,7 @@ SOURCE_DB_NAME=`cat $SOURCE_WP_CONFIG | grep \'DB_NAME\' | cut -d \' -f 4`
 SOURCE_DB_USER=`cat $SOURCE_WP_CONFIG | grep \'DB_USER\' | cut -d \' -f 4`
 SOURCE_DB_PASSWORD=`cat $SOURCE_WP_CONFIG | grep \'DB_PASSWORD\' | cut -d \' -f 4`
 
-# Prepare target database installation variables
+# Prepare target database variables
 TARGET_DB_HOST=$SOURCE_DB_HOST
 TARGET_DB_NAME=$STAGING_NAME
 TARGET_DB_USER=$SOURCE_DB_USER
@@ -153,14 +156,16 @@ if [ ! -z "${TEST_DB_EXISTS// }" ]; then
     exit 1
 fi
 
+
+
 # Target installation WordPress config file
-TARGET_WP_CONFIG=$BASE_DIRECTORY/$STAGING_NAME/wp-config.php
+TARGET_WP_CONFIG=$TARGET_DIRECTORY/wp-config.php
 
 # Target installation url
 TARGET_URL=$BASE_URL/$STAGING_NAME
 
 # Source database dump file
-DB_DUMP_FILE=$BASE_DIRECTORY/$STAGING_NAME/$SOURCE_DB_NAME.sql
+DB_DUMP_FILE=$TARGET_DIRECTORY/$SOURCE_DB_NAME.sql
 
 # Output log file
 LOG_FILE=staging.$STAGING_NAME.log
@@ -183,8 +188,11 @@ TARGET_FS_GROUP=`stat -c "%G" $BASE_DIRECTORY`
 source $DIR/wp-staging-php-cli.sh
 PHP_CLI_PATH=$( detect_php_cli )
 
+# Detect Interconnect.it search and replace PHP script.
 SRDB_CLI_PHP=`readlink -f $DIR/../srdb/srdb.cli.php`
 
+# Detect WP-CLI path.
+WP_CLI_PATH=`readlink -f $DIR/../wpcli/wp-cli.phar`
 
 
 
@@ -201,16 +209,16 @@ SRDB_CLI_PHP=`readlink -f $DIR/../srdb/srdb.cli.php`
 
 
 
-echo 2. Copying source directory
+echo \#\#\# 2. Copying source directory
 
 # Clone source directory to target directory
-cp -r $SOURCE_DIRECTORY $BASE_DIRECTORY/$STAGING_NAME
+cp -r $SOURCE_DIRECTORY $TARGET_DIRECTORY
 
 # Change ownership of target directory to specified user
-chown -R $TARGET_FS_USER:$TARGET_FS_GROUP $BASE_DIRECTORY/$STAGING_NAME
+chown -R $TARGET_FS_USER:$TARGET_FS_GROUP $TARGET_DIRECTORY
 
 # Make target directory readable and executable for everyone
-chmod ugo+rx $BASE_DIRECTORY/$STAGING_NAME
+chmod ugo+rx $TARGET_DIRECTORY
 
 
 
@@ -227,7 +235,7 @@ chmod ugo+rx $BASE_DIRECTORY/$STAGING_NAME
 
 
 
-echo 3. Dumping source database
+echo \#\#\# 3. Dumping source database
 
 # Dump the source database
 mysqldump $SOURCE_DB_NAME > $DB_DUMP_FILE
@@ -253,7 +261,7 @@ SOURCE_URL=`grep siteurl $DB_DUMP_FILE | head -c 1000 | cut -d \, -f 3 | cut -d 
 
 
 
-echo 4. Creating target database
+echo \#\#\# 4. Creating target database
 
 # Create target database script
 SQL1="CREATE DATABASE IF NOT EXISTS  \`$TARGET_DB_NAME\`;"
@@ -284,13 +292,17 @@ mysql $TARGET_DB_NAME < $DB_DUMP_FILE
 
 
 
-echo 5. Replacing target database strings
+echo \#\#\# 5. Replacing target database strings
 
 # Replace occurences of source directory with target directory
-$PHP_CLI_PATH -f $SRDB_CLI_PHP -- -v true -h $TARGET_DB_HOST -n $TARGET_DB_NAME -u $TARGET_DB_USER -p $TARGET_DB_PASSWORD -s $SOURCE_DIRECTORY -r $BASE_DIRECTORY/$STAGING_NAME
+echo 5.1 Replacing source directory in target database
+$PHP_CLI_PATH -f $SRDB_CLI_PHP -- -v true -h $TARGET_DB_HOST -n $TARGET_DB_NAME -u $TARGET_DB_USER -p $TARGET_DB_PASSWORD -s $SOURCE_DIRECTORY -r $TARGET_DIRECTORY
+$WP_CLI_PATH --allow-root --verbose --path=$TARGET_DIRECTORY search-replace $SOURCE_DIRECTORY $TARGET_DIRECTORY
 
 # Replace occurences of source url with target url
+echo 5.2 Replacing source url in target database
 $PHP_CLI_PATH -f $SRDB_CLI_PHP -- -v true -h $TARGET_DB_HOST -n $TARGET_DB_NAME -u $TARGET_DB_USER -p $TARGET_DB_PASSWORD -s $SOURCE_URL -r $TARGET_URL
+$WP_CLI_PATH --allow-root --verbose --path=$TARGET_DIRECTORY search-replace $SOURCE_URL $TARGET_URL
 
 
 
@@ -307,7 +319,7 @@ $PHP_CLI_PATH -f $SRDB_CLI_PHP -- -v true -h $TARGET_DB_HOST -n $TARGET_DB_NAME 
 
 
 
-echo 6. Updating target wp-config.php
+echo \#\#\# 6. Updating target wp-config.php
 
 # Get the line of the database name in the target wp-config.php file
 TARGET_DB_NAME_WP_CONFIG=`cat $TARGET_WP_CONFIG | grep \'DB_NAME\'`
@@ -333,17 +345,17 @@ replace -s "$TARGET_DB_NAME_WP_CONFIG" "$TARGET_DB_NAME_WP_CONFIG_REPLACED" -- $
 
 
 
-echo 7. Updating target htaccess file
+echo \#\#\# 7. Updating target htaccess file
 
-replace -s "RewriteBase /" "RewriteBase /$STAGING_NAME/" -- $BASE_DIRECTORY/$STAGING_NAME/.htaccess
-replace -s "RewriteRule . /index.php [L]" "RewriteRule . /$STAGING_NAME/index.php [L]" -- $BASE_DIRECTORY/$STAGING_NAME/.htaccess
+replace -s "RewriteBase /" "RewriteBase /$STAGING_NAME/" -- $TARGET_DIRECTORY/.htaccess
+replace -s "RewriteRule . /index.php [L]" "RewriteRule . /$STAGING_NAME/index.php [L]" -- $TARGET_DIRECTORY/.htaccess
 
 
 
 ################################################################################
 #                                                                              #
 #   █████╗                                                                     #
-#  ██╔══██╗    Do some logging finally.                                        #
+#  ██╔══██╗    Deactivate certain WordPress plugins.                           #
 #  ╚█████╔╝                                                                    #
 #  ██╔══██╗                                                                    #
 #  ╚█████╔╝ ██                                                                 #
@@ -353,12 +365,42 @@ replace -s "RewriteRule . /index.php [L]" "RewriteRule . /$STAGING_NAME/index.ph
 
 
 
+echo \#\#\# 8. Deactivating unnecessary plugins
+
+$WP_CLI_PATH --debug --allow-root --path=$TARGET_DIRECTORY plugin deactivate iwp-client
+$WP_CLI_PATH --debug --allow-root --path=$TARGET_DIRECTORY plugin deactivate jetpack
+$WP_CLI_PATH --debug --allow-root --path=$TARGET_DIRECTORY plugin deactivate litespeed-cache
+$WP_CLI_PATH --debug --allow-root --path=$TARGET_DIRECTORY plugin deactivate redis-cache
+$WP_CLI_PATH --debug --allow-root --path=$TARGET_DIRECTORY plugin deactivate varnish-http-purge
+
+$WP_CLI_PATH --debug --allow-root --path=$TARGET_DIRECTORY plugin deactivate modirumeb-for-woocommerce2
+$WP_CLI_PATH --debug --allow-root --path=$TARGET_DIRECTORY plugin deactivate hellaspay-for-woocommerce2
+$WP_CLI_PATH --debug --allow-root --path=$TARGET_DIRECTORY plugin deactivate nbghps-for-woocommerce2
+$WP_CLI_PATH --debug --allow-root --path=$TARGET_DIRECTORY plugin deactivate modirum-for-woocommerce2
+
+$WP_CLI_PATH --debug --allow-root --path=$TARGET_DIRECTORY cache flush
+
+
+
+################################################################################
+#                                                                              #
+#   █████╗                                                                     #
+#  ██╔══██╗    Do some (more) logging finally.                                 #
+#  ╚██████║                                                                    #
+#   ╚═══██║                                                                    #
+#   █████╔╝ ██                                                                 #
+#   ╚════╝                                                                     #
+#                                                                              #
+################################################################################
+
+
+
 # Echo staging website creation data
-echo 8. Done
+echo \#\#\# 9. Done
 echo
 printf "Source directory : $SOURCE_DIRECTORY\n"
 printf "Source http url  : $SOURCE_URL\n"
-printf "Target directory : $BASE_DIRECTORY/$STAGING_NAME\n"
+printf "Target directory : $TARGET_DIRECTORY\n"
 printf "Target http url  : $TARGET_URL\n"
 
 

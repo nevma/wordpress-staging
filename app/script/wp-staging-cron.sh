@@ -8,9 +8,7 @@ DIR=`readlink -f $DIR`
 
 
 
-# Detect php cli version (vs the cgi version)
-source $DIR/dist/bin/wp-staging-php-cli.sh.sh
-PHP_CLI_PATH=$( detect_php_cli )
+# Attempt to hold settings in an INI file
 
 # NAME=$(awk -F "=" '/^name=/ {print $2}' $DIR/ini.ini | tr -d ' \t\n\r')
 # SURNAME=$(awk -F "=" '/^surname=/ {print $2}' $DIR/ini.ini | tr -d ' \t\n\r')
@@ -55,7 +53,6 @@ chmod u+x $DIR/dist/srdb/srdb.cli.php
 LOG_FILE=`dirname $0`/../data/log/run.log
 
 echo -- `date` -- | tee -a $LOG_FILE
-echo Detected PHP CLI $PHP_CLI_PATH | tee -a $LOG_FILE
 echo | tee -a $LOG_FILE
 
 
@@ -92,24 +89,6 @@ else
         if [ $? -eq 0 ] ; then
             mv $FILE $DIR/../data/cur
         fi
-
-
-
-        # Deactivate certain WordPress plugins
-        echo Deactivating unnecessary plugins
-
-        $PHP_CLI_PATH $DIR/dist/wpcli/wp-cli.phar --debug --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate iwp-client
-        $PHP_CLI_PATH $DIR/dist/wpcli/wp-cli.phar --debug --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate jetpack
-        $PHP_CLI_PATH $DIR/dist/wpcli/wp-cli.phar --debug --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate litespeed-cache
-        $PHP_CLI_PATH $DIR/dist/wpcli/wp-cli.phar --debug --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate redis-cache
-        $PHP_CLI_PATH $DIR/dist/wpcli/wp-cli.phar --debug --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate varnish-http-purge
-
-        $PHP_CLI_PATH $DIR/dist/wpcli/wp-cli.phar --debug --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate modirumeb-for-woocommerce2
-        $PHP_CLI_PATH $DIR/dist/wpcli/wp-cli.phar --debug --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate hellaspay-for-woocommerce2
-        $PHP_CLI_PATH $DIR/dist/wpcli/wp-cli.phar --debug --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate nbghps-for-woocommerce2
-        $PHP_CLI_PATH $DIR/dist/wpcli/wp-cli.phar --debug --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME plugin deactivate modirum-for-woocommerce2
-
-        $PHP_CLI_PATH $DIR/dist/wpcli/wp-cli.phar --allow-root --path=$BASE_DIRECTORY/$STAGING_NAME cache flush
 
         echo | tee -a $LOG_FILE
 

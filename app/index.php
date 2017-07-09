@@ -119,6 +119,7 @@
                             </datalist>
                             <label for = "path">Or choose an existing website</label>
                             <select id = "websites-select">
+                                <option value = "" selected>Choose a website:</option>
                                 <?php foreach ( get_wordpress_websites() as $website ) : ?>
                                     <option value = "<?php echo $website; ?>"><?php echo $website; ?></option>
                                 <?php endforeach; ?>

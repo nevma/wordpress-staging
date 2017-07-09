@@ -1,9 +1,9 @@
 <?php
 
     // The base url from which all the staging websites will be accessible.
-    define( 'BASE_URL', 'http://staging.mydomain.com' );
+    define( 'BASE_URL', 'http://clients.nevma.gr' );
 
     // The base directory where all the staging websites will be copied.
-    define( 'BASE_DIRECTORY', '/home/staging-user/public_html' );
+    define( 'BASE_DIRECTORY', '/home/nevmaclients/public_html' );
 
 ?>

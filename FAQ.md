@@ -19,3 +19,9 @@ Beware of the plugins that the `app` deactivates in the staging environment.
 
 The `app` is unable to detect and take into account any custom `.htaccess`
 modifications. 
+
+If you are staging websites which are under the SSL protocol, ie https, then the
+main directory of the staging websites should have an SSL certificate installed
+in it, otherwise browsers will complain and refuse the connection to them. The 
+easiest thing one can do is to add a simple, free, even self signed certificate
+to this directory.

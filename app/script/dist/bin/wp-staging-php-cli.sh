@@ -13,9 +13,9 @@ function detect_php_cli()
 
     for PHP in $WHERE_IS_PHP ; do
 
-        local RES=`$PHP -r 'echo "Test";' 2> /dev/null`
+        local RESULT=`$PHP -r 'echo "Test";' 2> /dev/null`
 
-        if [ "$RES" = "Test" ] ; then
+        if [ "$RESULT" = "Test" ] ; then
             echo $PHP
             break
         fi

@@ -244,7 +244,7 @@ mysqldump $SOURCE_DB_NAME > $DB_DUMP_FILE
 chown -R $TARGET_FS_USER:$TARGET_FS_GROUP $DB_DUMP_FILE
 
 # Extract source url from database dump
-SOURCE_URL=`grep siteurl $DB_DUMP_FILE | head -c 1000 | cut -d \, -f 3 | cut -d \' -f 2`
+SOURCE_URL=`grep \'siteurl\' $DB_DUMP_FILE | head -c 1000 | cut -d \, -f 3 | cut -d \' -f 2`
 
 
 

@@ -306,13 +306,13 @@ replace -s "$TARGET_DB_NAME_WP_CONFIG" "$TARGET_DB_NAME_WP_CONFIG_REPLACED" -- $
 
 
 ################################################################################
-# 
-# Add a PHP constant to the wp-confing.php to disable Redis functions
-# 
-# MATCH='<?php'
-# INSERT="define('WP_REDIS_DISABLED', true);"
-# sed -i "s/$MATCH/$MATCH\n\n$INSERT/" $TARGET_WP_CONFIG
-# 
+#                                                                              #
+# Add a PHP constant to the wp-config.php to disable Redis functions           #
+#                                                                              #
+# MATCH='<?php'                                                                #
+# INSERT="define('WP_REDIS_DISABLED', true);"                                  #
+# sed -i "s/$MATCH/$MATCH\n\n$INSERT/" $TARGET_WP_CONFIG                       #
+#                                                                              #
 ################################################################################
 
 
@@ -322,7 +322,7 @@ replace -s "$TARGET_DB_NAME_WP_CONFIG" "$TARGET_DB_NAME_WP_CONFIG_REPLACED" -- $
 #   ██████╗                                                                    #
 #  ██╔════╝     Replace urls and paths in the target database with both the    #
 #  ███████╗     Interconnectit php database search and replace script and      #
-#  ██╔═══██╗    WPCLI consecutively.                                         #
+#  ██╔═══██╗    WPCLI consecutively.                                           #
 #  ╚██████╔╝ ██                                                                #
 #   ╚═════╝                                                                    #
 #                                                                              #
@@ -367,8 +367,8 @@ replace -s "RewriteRule . /index.php [L]" "RewriteRule . /$STAGING_NAME/index.ph
 ################################################################################
 #                                                                              #
 #   █████╗                                                                     #
-#  ██╔══██╗    Deactivate certain WordPress plugins.                           #
-#  ╚█████╔╝                                                                    #
+#  ██╔══██╗    Deactivate certain WordPress plugins unnecessary in the         #
+#  ╚█████╔╝    staging environment.                                            #
 #  ██╔══██╗                                                                    #
 #  ╚█████╔╝ ██                                                                 #
 #   ╚════╝                                                                     #
@@ -379,6 +379,7 @@ replace -s "RewriteRule . /index.php [L]" "RewriteRule . /$STAGING_NAME/index.ph
 
 echo \#\#\# 8. Deactivating unnecessary plugins
 
+$WP_CLI_PATH --debug --allow-root --skip-plugins --path=$TARGET_DIRECTORY plugin deactivate bwp-minify
 $WP_CLI_PATH --debug --allow-root --skip-plugins --path=$TARGET_DIRECTORY plugin deactivate iwp-client
 $WP_CLI_PATH --debug --allow-root --skip-plugins --path=$TARGET_DIRECTORY plugin deactivate jetpack
 $WP_CLI_PATH --debug --allow-root --skip-plugins --path=$TARGET_DIRECTORY plugin deactivate litespeed-cache

@@ -169,13 +169,19 @@
 
         $log_length = isset( $_GET['log-length'] ) ? intval( $_GET['log-length'] ) : 100-1;
 
-        $log = file_get_contents( 'data/log/run.log' );
-        $log_array = explode( "\n", $log );
-        $total = sizeof( $log_array );
-        $log_array = array_slice( $log_array, $total-$log_length, $total );
-        $log_message = implode( '<br />', $log_array );
+        $lines = array();
+        $fp = fopen( 'data/log/run.log', "r" );
+        while( ! feof( $fp ) ) {
+            $line = fgets( $fp, 4096 );
+            array_push( $lines, $line );
+            if ( count( $lines ) > $log_length ) {
+                array_shift( $lines );
+            }
+        }
+        $log_message = implode( '<br />', $lines );
+        fclose( $fp );
 
-        create_message( '<p>Here are the last ' . $log_length . ' log lines:</p><p><small><code>'. $log_message . '</code></small></p>' );
+        create_message( '<p>Here are the last ' . $log_length . ' log lines:</p><p><small><code class="log-lines">'. $log_message . '</code></small></p>' );
 
     }
 

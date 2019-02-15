@@ -120,6 +120,10 @@
         vertical-align: middle;
     }
 
+    .log-lines {
+        line-height: 1.25;
+    }
+
     .action-log {
         padding: 4px 15px;
         vertical-align: middle;

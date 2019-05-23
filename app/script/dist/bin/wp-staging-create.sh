@@ -335,12 +335,12 @@ echo \#\#\# 5. Replacing target database strings
 # Replace occurences of source directory with target directory
 echo 5.1 Replacing source directory in target database
 $PHP_CLI_PATH -f $SRDB_CLI_PHP -- -v true -h $TARGET_DB_HOST -n $TARGET_DB_NAME -u $TARGET_DB_USER -p $TARGET_DB_PASSWORD -s $SOURCE_DIRECTORY -r $TARGET_DIRECTORY
-$WP_CLI_PATH --allow-root --verbose --skip-plugins --path=$TARGET_DIRECTORY search-replace $SOURCE_DIRECTORY $TARGET_DIRECTORY
+$WP_CLI_PATH --allow-root --path=$TARGET_DIRECTORY search-replace $SOURCE_DIRECTORY $TARGET_DIRECTORY
 
 # Replace occurences of source url with target url
 echo 5.2 Replacing source url in target database
 $PHP_CLI_PATH -f $SRDB_CLI_PHP -- -v true -h $TARGET_DB_HOST -n $TARGET_DB_NAME -u $TARGET_DB_USER -p $TARGET_DB_PASSWORD -s $SOURCE_URL -r $TARGET_URL
-$WP_CLI_PATH --allow-root --verbose --skip-plugins --path=$TARGET_DIRECTORY search-replace $SOURCE_URL $TARGET_URL
+$WP_CLI_PATH --allow-root --path=$TARGET_DIRECTORY search-replace $SOURCE_URL $TARGET_URL
 
 
 
@@ -379,19 +379,19 @@ replace -s "RewriteRule . /index.php [L]" "RewriteRule . /$STAGING_NAME/index.ph
 
 echo \#\#\# 8. Deactivating unnecessary plugins
 
-$WP_CLI_PATH --debug --allow-root --skip-plugins --path=$TARGET_DIRECTORY plugin deactivate bwp-minify
-$WP_CLI_PATH --debug --allow-root --skip-plugins --path=$TARGET_DIRECTORY plugin deactivate iwp-client
-$WP_CLI_PATH --debug --allow-root --skip-plugins --path=$TARGET_DIRECTORY plugin deactivate jetpack
-$WP_CLI_PATH --debug --allow-root --skip-plugins --path=$TARGET_DIRECTORY plugin deactivate litespeed-cache
-$WP_CLI_PATH --debug --allow-root --skip-plugins --path=$TARGET_DIRECTORY plugin deactivate redis-cache
-$WP_CLI_PATH --debug --allow-root --skip-plugins --path=$TARGET_DIRECTORY plugin deactivate varnish-http-purge
+$WP_CLI_PATH --allow-root --path=$TARGET_DIRECTORY plugin deactivate bwp-minify
+$WP_CLI_PATH --allow-root --path=$TARGET_DIRECTORY plugin deactivate iwp-client
+$WP_CLI_PATH --allow-root --path=$TARGET_DIRECTORY plugin deactivate jetpack
+$WP_CLI_PATH --allow-root --path=$TARGET_DIRECTORY plugin deactivate litespeed-cache
+$WP_CLI_PATH --allow-root --path=$TARGET_DIRECTORY plugin deactivate redis-cache
+$WP_CLI_PATH --allow-root --path=$TARGET_DIRECTORY plugin deactivate varnish-http-purge
 
-$WP_CLI_PATH --debug --allow-root --skip-plugins --path=$TARGET_DIRECTORY plugin deactivate modirumeb-for-woocommerce2
-$WP_CLI_PATH --debug --allow-root --skip-plugins --path=$TARGET_DIRECTORY plugin deactivate hellaspay-for-woocommerce2
-$WP_CLI_PATH --debug --allow-root --skip-plugins --path=$TARGET_DIRECTORY plugin deactivate nbghps-for-woocommerce2
-$WP_CLI_PATH --debug --allow-root --skip-plugins --path=$TARGET_DIRECTORY plugin deactivate modirum-for-woocommerce2
+$WP_CLI_PATH --allow-root --path=$TARGET_DIRECTORY plugin deactivate modirumeb-for-woocommerce2
+$WP_CLI_PATH --allow-root --path=$TARGET_DIRECTORY plugin deactivate hellaspay-for-woocommerce2
+$WP_CLI_PATH --allow-root --path=$TARGET_DIRECTORY plugin deactivate nbghps-for-woocommerce2
+$WP_CLI_PATH --allow-root --path=$TARGET_DIRECTORY plugin deactivate modirum-for-woocommerce2
 
-$WP_CLI_PATH --debug --allow-root --skip-plugins --path=$TARGET_DIRECTORY cache flush
+$WP_CLI_PATH --allow-root --path=$TARGET_DIRECTORY cache flush
 
 
 

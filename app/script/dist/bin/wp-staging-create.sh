@@ -292,7 +292,7 @@ mysql $TARGET_DB_NAME < $DB_DUMP_FILE
 
 
 
-echo \#\#\# 6. Updating target wp-config.php
+echo \#\#\# 5. Updating target wp-config.php
 
 # Get the line of the database name in the target wp-config.php file
 TARGET_DB_NAME_WP_CONFIG=`cat $TARGET_WP_CONFIG | grep \'DB_NAME\'`
@@ -330,15 +330,15 @@ replace -s "$TARGET_DB_NAME_WP_CONFIG" "$TARGET_DB_NAME_WP_CONFIG_REPLACED" -- $
 
 
 
-echo \#\#\# 5. Replacing target database strings
+echo \#\#\# 6. Replacing target database strings
 
 # Replace occurences of source directory with target directory
-echo 5.1 Replacing source directory in target database
+echo 6.1 Replacing source directory in target database (via script)
 $PHP_CLI_PATH -f $SRDB_CLI_PHP -- -v true -h $TARGET_DB_HOST -n $TARGET_DB_NAME -u $TARGET_DB_USER -p $TARGET_DB_PASSWORD -s $SOURCE_DIRECTORY -r $TARGET_DIRECTORY
 $WP_CLI_PATH --allow-root --path=$TARGET_DIRECTORY search-replace $SOURCE_DIRECTORY $TARGET_DIRECTORY
 
 # Replace occurences of source url with target url
-echo 5.2 Replacing source url in target database
+echo 6.2 Replacing source url in target database (via wpcli)
 $PHP_CLI_PATH -f $SRDB_CLI_PHP -- -v true -h $TARGET_DB_HOST -n $TARGET_DB_NAME -u $TARGET_DB_USER -p $TARGET_DB_PASSWORD -s $SOURCE_URL -r $TARGET_URL
 $WP_CLI_PATH --allow-root --path=$TARGET_DIRECTORY search-replace $SOURCE_URL $TARGET_URL
 

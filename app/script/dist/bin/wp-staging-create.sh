@@ -333,12 +333,12 @@ replace -s "$TARGET_DB_NAME_WP_CONFIG" "$TARGET_DB_NAME_WP_CONFIG_REPLACED" -- $
 echo \#\#\# 6. Replacing target database strings
 
 # Replace occurences of source directory with target directory
-echo 6.1 Replacing source directory in target database (via script)
+echo 6.1 Replacing source directory in target database via script
 $PHP_CLI_PATH -f $SRDB_CLI_PHP -- -v true -h $TARGET_DB_HOST -n $TARGET_DB_NAME -u $TARGET_DB_USER -p $TARGET_DB_PASSWORD -s $SOURCE_DIRECTORY -r $TARGET_DIRECTORY
 $WP_CLI_PATH --allow-root --path=$TARGET_DIRECTORY search-replace $SOURCE_DIRECTORY $TARGET_DIRECTORY
 
 # Replace occurences of source url with target url
-echo 6.2 Replacing source url in target database (via wpcli)
+echo 6.2 Replacing source url in target database via wpcli
 $PHP_CLI_PATH -f $SRDB_CLI_PHP -- -v true -h $TARGET_DB_HOST -n $TARGET_DB_NAME -u $TARGET_DB_USER -p $TARGET_DB_PASSWORD -s $SOURCE_URL -r $TARGET_URL
 $WP_CLI_PATH --allow-root --path=$TARGET_DIRECTORY search-replace $SOURCE_URL $TARGET_URL
 
